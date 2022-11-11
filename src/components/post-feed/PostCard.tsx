@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Post from '../../models/Post';
+import Comment from '../../models/Comment';
+import CommentCard from './CommentCard';
 import { Box, Container, Button, Paper, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -59,7 +61,7 @@ export const PostCard = (props: postProps) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     props.post.comments.push(
-      new Post(0, data.get('commentText')?.toString() || '', '', [], user, [])
+      new Comment(0, data.get('commentText')?.toString() || '', user)
     );
     let payload = props.post;
     await apiUpsertPost(payload);
@@ -153,8 +155,12 @@ export const PostCard = (props: postProps) => {
           <Typography paragraph>comments:</Typography>
           <Grid container justifyContent={'center'}>
             <Grid item sx={{ width: '100%' }}>
-              {props.post.comments.map((item) => (
-                <PostCard post={item} key={item.id} />
+              {props.post.comments.map((comment) => (
+                <CommentCard
+                  text={comment.text}
+                  key={comment.id}
+                  commenter={comment.commenter}
+                />
               ))}
             </Grid>
           </Grid>
