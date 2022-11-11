@@ -1,7 +1,7 @@
-import * as React from "react";
-import { useContext } from "react";
-import styled from "styled-components";
-import Post from "../../models/Post";
+import * as React from 'react';
+import { useContext, useState } from 'react';
+import styled from 'styled-components';
+import Post from '../../models/Post';
 import { Box, Container, Button, Paper, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -16,6 +16,7 @@ import { orange, red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
+import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
@@ -24,12 +25,12 @@ import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { apiAddorRemoveLike } from '../../remote/social-media-api/post.api';
 
 interface postProps {
-    post: Post,
-    key: number
+  post: Post;
+  key: number;
 }
-
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -42,10 +43,10 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   marginLeft: 'auto',
 }));
 
-
 export const PostCard = (props: postProps) => {
   const { user } = useContext(UserContext);
-  const [expanded, setExpanded ] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [post, setPost] = useState(props.post);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -57,81 +58,108 @@ export const PostCard = (props: postProps) => {
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    props.post.comments.push(new Post(0, data.get('commentText')?.toString() || '', '', [], user));
+    props.post.comments.push(
+      new Post(0, data.get('commentText')?.toString() || '', '', [], user, [])
+    );
     let payload = props.post;
     await apiUpsertPost(payload);
-  }
+  };
 
-  commentForm = 
-  <Paper
-      component="form"
-      sx={{ p: '4px 0', display: 'flex', alignItems: 'center', width: '100%', mb: '15px' }}
+  const handleLike = async () => {
+    let res = await apiAddorRemoveLike(post);
+    let newPost = res.payload;
+    setPost(newPost);
+    console.log(props.post.likes);
+    console.log(res.payload.likes);
+  };
+
+  commentForm = (
+    <Paper
+      component='form'
+      sx={{
+        p: '4px 0',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        mb: '15px',
+      }}
       elevation={1}
-      onSubmit={handleComment}>
-  <InputBase
+      onSubmit={handleComment}
+    >
+      <InputBase
         sx={{ ml: 1, flex: 1 }}
         id='commentText'
         name='commentText'
-        placeholder="Make a comment..."
+        placeholder='Make a comment...'
         inputProps={{ 'aria-label': 'Make a comment' }}
       />
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton type="submit" sx={{ p: '10px' }} aria-label="submit">
-        <AddCircleIcon color="warning" />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation='vertical' />
+      <IconButton type='submit' sx={{ p: '10px' }} aria-label='submit'>
+        <AddCircleIcon color='warning' />
       </IconButton>
- </Paper>
+    </Paper>
+  );
 
   if (props.post.imageUrl) {
-    media = <CardMedia
-    component="img"
-    src = {props.post.imageUrl}
-    alt="post image"
-    sx={{maxHeight: "300px", width: "auto", marginLeft: "auto", marginRight: "auto" }}
-  />
+    media = (
+      <CardMedia
+        component='img'
+        src={props.post.imageUrl}
+        alt='post image'
+        sx={{
+          maxHeight: '300px',
+          width: 'auto',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+      />
+    );
   }
 
   return (
-    <Card sx={{maxWidth:"100%", marginTop: "3%" }}>
-      
-    <CardHeader
-      title={props.post.author.firstName}
-      avatar={
-          <Avatar sx={{ bgcolor: '#ed6c02' }} aria-label="recipe">
-            <PersonIcon/>
+    <Card sx={{ maxWidth: '100%', marginTop: '3%' }}>
+      <CardHeader
+        title={props.post.author.firstName}
+        avatar={
+          <Avatar sx={{ bgcolor: '#ed6c02' }} aria-label='recipe'>
+            <PersonIcon />
           </Avatar>
         }
-        />
-       
-      { media }
+      />
+
+      {media}
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant='body2' color='text.secondary'>
           {props.post.text}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-          <ExpandMore
+        <Button variant='text'>
+          <InsertThumbUpIcon onClick={handleLike} />
+        </Button>
+        <span>{post.likes.length}</span>
+        <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
-          aria-label="show more"
+          aria-label='show more'
         >
           <InsertCommentIcon />
         </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expanded} timeout='auto' unmountOnExit>
         <CardContent>
-          { commentForm }
+          {commentForm}
           <Typography paragraph>comments:</Typography>
-          <Grid container justifyContent={"center"}>
-                <Grid item sx={{width: '100%'}} >
-                    {props.post.comments.map((item) =>(
-                    <PostCard post={item} key={item.id}/>
-                ))
-                }
-                </Grid> 
+          <Grid container justifyContent={'center'}>
+            <Grid item sx={{ width: '100%' }}>
+              {props.post.comments.map((item) => (
+                <PostCard post={item} key={item.id} />
+              ))}
             </Grid>
+          </Grid>
         </CardContent>
       </Collapse>
     </Card>
-      );
-}
+  );
+};
