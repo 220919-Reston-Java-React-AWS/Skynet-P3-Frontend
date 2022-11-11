@@ -20,7 +20,7 @@ import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
-import { apiUpsertPost } from '../../remote/social-media-api/post.api';
+import { apiDeletePost, apiUpsertPost } from '../../remote/social-media-api/post.api';
 import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
@@ -67,6 +67,16 @@ export const PostCard = (props: postProps) => {
 
   const handleLike = async () => {
     let res = await apiAddorRemoveLike(post);
+    let newPost = res.payload;
+    setPost(newPost);
+    console.log(props.post.likes);
+    console.log(res.payload.likes);
+  };
+
+  
+  // Josiah
+  const handleDeleteP = async () => {
+    let res = await apiDeletePost(post);
     let newPost = res.payload;
     setPost(newPost);
     console.log(props.post.likes);
@@ -144,6 +154,27 @@ export const PostCard = (props: postProps) => {
           aria-expanded={expanded}
           aria-label='show more'
         >
+
+{/* Josiah */}
+      {media}
+      <CardContent>
+        <Typography variant='body2' color='text.secondary'>
+          {props.post.text}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Button variant='text'>
+          <InsertThumbUpIcon onClick={handleDeleteP} />
+        </Button>
+        <span>{post.likes.length}</span>
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label='show more'
+        >
+
+
           <InsertCommentIcon />
         </ExpandMore>
       </CardActions>
