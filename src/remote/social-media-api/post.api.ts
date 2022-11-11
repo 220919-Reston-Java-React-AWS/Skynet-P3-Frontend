@@ -27,8 +27,8 @@ export const apiAddorRemoveLike = async (
 export const apiDeletePost = async (
   post: Post
 ): Promise<socialApiResponse> => {
-  const response = await socialClient.delete<any>(`${baseURL}/delete-post`, post, {
-    withCredentials: true,
+  const response = await socialClient.delete<any>(`${baseURL}/delete-post`, {
+    withCredentials: true, data: post
   });
   return { status: response.status, payload: response.data };
 };

@@ -17,6 +17,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
+// Josiah
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
@@ -47,6 +50,7 @@ export const PostCard = (props: postProps) => {
   const { user } = useContext(UserContext);
   const [expanded, setExpanded] = React.useState(false);
   const [post, setPost] = useState(props.post);
+  const [deletedPosts, setDeletedPosts] = useState(0);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -78,9 +82,7 @@ export const PostCard = (props: postProps) => {
   const handleDeleteP = async () => {
     let res = await apiDeletePost(post);
     let newPost = res.payload;
-    setPost(newPost);
-    console.log(props.post.likes);
-    console.log(res.payload.likes);
+    setDeletedPosts((prev)=> prev +1);
   };
 
   commentForm = (
@@ -148,33 +150,20 @@ export const PostCard = (props: postProps) => {
           <InsertThumbUpIcon onClick={handleLike} />
         </Button>
         <span>{post.likes.length}</span>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label='show more'
-        >
-
-{/* Josiah */}
-      {media}
-      <CardContent>
-        <Typography variant='body2' color='text.secondary'>
-          {props.post.text}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
+        
+        {/* Josiah */}
         <Button variant='text'>
-          <InsertThumbUpIcon onClick={handleDeleteP} />
+          <DeleteIcon onClick={handleDeleteP}>
+            
+          </DeleteIcon>
         </Button>
-        <span>{post.likes.length}</span>
+        
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label='show more'
         >
-
-
           <InsertCommentIcon />
         </ExpandMore>
       </CardActions>
