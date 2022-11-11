@@ -19,10 +19,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
+// Josiah
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
-import { apiUpsertPost } from '../../remote/social-media-api/post.api';
+import { apiDeletePost, apiUpsertPost } from '../../remote/social-media-api/post.api';
 import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
@@ -49,6 +52,7 @@ export const PostCard = (props: postProps) => {
   const { user } = useContext(UserContext);
   const [expanded, setExpanded] = React.useState(false);
   const [post, setPost] = useState(props.post);
+  const [deletedPosts, setDeletedPosts] = useState(0);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -73,6 +77,14 @@ export const PostCard = (props: postProps) => {
     setPost(newPost);
     console.log(props.post.likes);
     console.log(res.payload.likes);
+  };
+
+  
+  // Josiah
+  const handleDeleteP = async () => {
+    let res = await apiDeletePost(post);
+    let newPost = res.payload;
+    setDeletedPosts((prev)=> prev +1);
   };
 
   commentForm = (
@@ -140,6 +152,14 @@ export const PostCard = (props: postProps) => {
           <InsertThumbUpIcon onClick={handleLike} />
         </Button>
         <span>{post.likes.length}</span>
+        
+        {/* Josiah */}
+        <Button variant='text'>
+          <DeleteIcon onClick={handleDeleteP}>
+            
+          </DeleteIcon>
+        </Button>
+        
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

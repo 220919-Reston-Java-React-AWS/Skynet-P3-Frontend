@@ -23,3 +23,12 @@ export const apiAddorRemoveLike = async (
   });
   return { status: response.status, payload: response.data };
 };
+
+export const apiDeletePost = async (
+  post: Post
+): Promise<socialApiResponse> => {
+  const response = await socialClient.delete<any>(`${baseURL}/delete-post`, {
+    withCredentials: true, data: post
+  });
+  return { status: response.status, payload: response.data };
+};
