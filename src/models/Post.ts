@@ -1,8 +1,10 @@
+import Comment from './Comment';
+
 export default class Post {
   id: number;
   text: string;
   imageUrl: string;
-  comments: Post[];
+  comments: Comment[];
   author: any;
   likes: any[];
 
@@ -10,7 +12,7 @@ export default class Post {
     id: number,
     text: string,
     imageUrl: string,
-    comments: Post[],
+    comments: Comment[],
     author: any,
     likes: any[]
   ) {

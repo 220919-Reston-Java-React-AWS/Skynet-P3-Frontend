@@ -15,7 +15,6 @@ import { apiLogin } from '../../remote/social-media-api/auth.api';
 import { useContext } from 'react';
 import { UserContext } from '../../context/user.context';
 
-
 const theme = createTheme();
 
 export default function Login() {
@@ -26,16 +25,20 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const response = await apiLogin(`${data.get('email')}`, `${data.get('password')}`);
+    const response = await apiLogin(
+      `${data.get('email')}`,
+      `${data.get('password')}`
+    );
     if (response.status >= 200 && response.status < 300) {
       setUser(response.payload);
       navigate('/');
     }
+    window.sessionStorage.setItem('userData', JSON.stringify(response.payload));
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component='main' maxWidth='xs'>
         <CssBaseline />
         <Box
           sx={{
@@ -48,41 +51,46 @@ export default function Login() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component='form'
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
-              margin="normal"
+              margin='normal'
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
               autoFocus
             />
             <TextField
-              margin="normal"
+              margin='normal'
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              name='password'
+              label='Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
             />
             <Button
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
+              variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="register" variant="body2">
+                <Link href='register' variant='body2'>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
