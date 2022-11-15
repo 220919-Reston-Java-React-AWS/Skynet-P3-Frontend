@@ -1,1 +1,14 @@
+#profile-header {
+    background-color: #ed6c02;
+    width: fit-content;
+    margin: auto;
+}
 
+#profile-page {
+    background-color: #ed6c02;
+    margin-top: 0;
+}
+
+#bio-container {
+    margin-top: 80px;
+}

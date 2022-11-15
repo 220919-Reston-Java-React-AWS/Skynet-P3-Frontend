@@ -91,7 +91,7 @@ export const PostFeed = () => {
         }}
       >
         <h2 style={{ textAlign: 'center' }}>{welcomeText}</h2>
-        <h3 style={{ textAlign: 'center' }}>Click Below to go to your profile page</h3>
+        <h3 style={{ textAlign: 'center' }}>Click below to go to your profile page</h3>
         <div style={{ textAlign: 'center' }}>
         <Link to={'/profile'} >Your Profile</Link>
         </div>

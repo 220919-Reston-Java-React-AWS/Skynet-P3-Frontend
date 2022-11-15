@@ -1,10 +1,11 @@
+import { Container, Grid } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import socialClient from "../../remote/social-media-api/socialClient";
 
 const Profile = () => {
 
-    const [profile, setProfile] = useState(<div></div>)
+    const [profile, setProfile] = useState(<></>)
     const baseURL = '/profile';
     
     useEffect(() => {
@@ -14,20 +15,47 @@ const Profile = () => {
                 console.log(response.data);
                 let info = response.data
                 setProfile(
-                    <div>
-                    <p style={{ textAlign: 'center' }}>
-                        {info.firstName} {info.lastName}
-                    </p>
-                    <p style={{ textAlign: 'center' }}>
-                        {info.username}
-                    </p>
-                    <p style={{ textAlign: 'center' }}>
-                        {info.about}
-                    </p>
-                    <div style={{ textAlign: 'center' }}>
-                        <img src={info.pic} />
-                    </div>
-                    </div>
+                    <Container maxWidth='xl'>
+                         <Grid container justifyContent="center" direction="column" alignItems="center">
+                            <Grid item>
+                                <img src={info.pic}/>
+                            </Grid>
+                        </Grid>
+                         <Grid container justifyContent="space-evenly" 
+                        direction="row"
+                        alignItems="center"
+                        spacing={12}
+                        >
+                            <Grid item>
+                                <h4 style={{ textAlign: 'center' }} id="profile-header">
+                                   Name
+                                </h4>
+                            <div style={{ textAlign: 'center' }}>
+                            {info.firstName} {info.lastName}
+                            </div>
+                            </Grid>
+                            <Grid item>
+                                <h4 style={{ textAlign: 'center' }} id="profile-header">
+                                    Username
+                                </h4>
+                                <div style={{ textAlign: 'center' }}>
+                                {info.username}
+                                </div>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container id="bio-container" justifyContent="center" direction="column" alignItems="center">
+                            <Grid item>
+                            <h4 style={{ textAlign: 'center' }} id="profile-header">
+                                    Bio
+                                </h4>
+                                <div>
+                                {info.about}
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </Container>
+                       
                 )
     });
 }, []);
@@ -35,11 +63,15 @@ const Profile = () => {
     
     
     return (
-        <main>
-            <h1 style={{ textAlign: 'center' }}>Profile</h1>
-            <Link to={'/'}>Back to posts</Link>
+        <>
+            <h1 style={{ textAlign: 'center' }} id="profile-page">Profile Page</h1>
             {profile}
-        </main>
+            <Grid container justifyContent={'flex-end'} alignItems="center" direction="column">
+            <Grid item>
+            <Link to={'/'}>Back to posts</Link>
+            </Grid>
+            </Grid>
+        </>
         
     );
 }
