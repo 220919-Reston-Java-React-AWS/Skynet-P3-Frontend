@@ -73,6 +73,9 @@ const Profile = () => {
             <Grid item>
             <Link to={'/update'}>Update Profile</Link>
             </Grid>
+            <Grid item>
+            <Link to={'/users'}>See all users</Link>
+            </Grid>
             </Grid>
         </>
         

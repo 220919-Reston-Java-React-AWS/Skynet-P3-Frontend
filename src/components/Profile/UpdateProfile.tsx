@@ -31,7 +31,7 @@ const UpdateProfile = () => {
              <h1 style={{ textAlign: 'center' }} id="profile-page" >
                 Update Profile
             </h1>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} id="update-profile" >
               <Grid item xs={6}>
                 <TextField
                   defaultValue={user?.username}

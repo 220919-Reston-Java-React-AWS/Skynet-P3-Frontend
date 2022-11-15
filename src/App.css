@@ -7,6 +7,7 @@
 #profile-page {
     background-color: #ed6c02;
     margin-top: 10px;
+    margin-bottom: 0;
 }
 
 #bio-container {
@@ -29,4 +30,18 @@
 
 #info {
     font-size:larger;
+}
+
+#mini-profile-box {
+    height: 100px;
+    width: 100px;
+}
+#mini-profile-box img {
+    height: auto;
+    width: 100%;
+}
+
+#mini-box {
+    height: 300px;
+    width: 300px;
 }
