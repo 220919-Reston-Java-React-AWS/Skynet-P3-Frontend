@@ -17,8 +17,8 @@ const Profile = () => {
                 setProfile(
                     <Container maxWidth='xl'>
                          <Grid container justifyContent="center" direction="column" alignItems="center">
-                            <Grid item>
-                                <img src={info.pic}/>
+                            <Grid item id="profile-box">
+                                <img src={info.pic} id="profile-pic"/>
                             </Grid>
                         </Grid>
                          <Grid container justifyContent="space-evenly" 
