@@ -27,18 +27,18 @@ const Profile = () => {
                         spacing={12}
                         >
                             <Grid item>
-                                <h4 style={{ textAlign: 'center' }} id="profile-header">
+                                <h1 style={{ textAlign: 'center' }} id="profile-header">
                                    Name
-                                </h4>
-                            <div style={{ textAlign: 'center' }}>
+                                </h1>
+                            <div id="info" style={{ textAlign: 'center' }}>
                             {info.firstName} {info.lastName}
                             </div>
                             </Grid>
                             <Grid item>
-                                <h4 style={{ textAlign: 'center' }} id="profile-header">
+                                <h1 style={{ textAlign: 'center' }} id="profile-header">
                                     Username
-                                </h4>
-                                <div style={{ textAlign: 'center' }}>
+                                </h1>
+                                <div id="info" style={{ textAlign: 'center' }}>
                                 {info.username}
                                 </div>
                             </Grid>
@@ -46,10 +46,10 @@ const Profile = () => {
 
                         <Grid container id="bio-container" justifyContent="center" direction="column" alignItems="center">
                             <Grid item>
-                            <h4 style={{ textAlign: 'center' }} id="profile-header">
+                            <h1 style={{ textAlign: 'center' }} id="profile-header">
                                     Bio
-                                </h4>
-                                <div>
+                                </h1>
+                                <div id="info" style={{ textAlign: 'center' }} >
                                 {info.about}
                                 </div>
                             </Grid>
@@ -69,6 +69,9 @@ const Profile = () => {
             <Grid container justifyContent={'flex-end'} alignItems="center" direction="column">
             <Grid item>
             <Link to={'/'}>Back to posts</Link>
+            </Grid>
+            <Grid item>
+            <Link to={'/update'}>Update Profile</Link>
             </Grid>
             </Grid>
         </>

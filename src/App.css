@@ -6,7 +6,7 @@
 
 #profile-page {
     background-color: #ed6c02;
-    margin-top: 0;
+    margin-top: 10px;
 }
 
 #bio-container {
@@ -21,4 +21,12 @@
 #profile-box {
     height:250px;
     width:250px;
+}
+
+#update-profile {
+    margin-top: 10px;
+}
+
+#info {
+    font-size:larger;
 }
