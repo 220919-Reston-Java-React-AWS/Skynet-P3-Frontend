@@ -7,7 +7,13 @@ const socialClient = axios.create({
   
   //http://localhost:8080
   //http://project3-env.eba-fufsnv9d.us-east-1.elasticbeanstalk.com
-  baseURL: 'http://localhost:8080'
+
+  baseURL: 'http://localhost:8080',
+
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'http://localhost:8080',
+  }
 });
 
 export interface socialApiResponse {
