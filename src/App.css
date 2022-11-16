@@ -1,1 +1,47 @@
+#profile-header {
+    background-color: #ed6c02;
+    width: fit-content;
+    margin: auto;
+}
 
+#profile-page {
+    background-color: #ed6c02;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#bio-container {
+    margin-top: 80px;
+}
+
+#profile-box img {
+    width: 100%;
+    height: auto;
+}
+
+#profile-box {
+    height:250px;
+    width:250px;
+}
+
+#update-profile {
+    margin-top: 10px;
+}
+
+#info {
+    font-size:larger;
+}
+
+#mini-profile-box {
+    height: 100px;
+    width: 100px;
+}
+#mini-profile-box img {
+    height: auto;
+    width: 100%;
+}
+
+#mini-box {
+    height: 300px;
+    width: 300px;
+}

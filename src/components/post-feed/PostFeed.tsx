@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/user.context';
 import TextField from '@mui/material/TextField';
 import { apiUpsertPost } from '../../remote/social-media-api/post.api';
+import { Link } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [post, setPosts] = useState<Post[]>([]);
@@ -90,6 +91,10 @@ export const PostFeed = () => {
         }}
       >
         <h2 style={{ textAlign: 'center' }}>{welcomeText}</h2>
+        <h3 style={{ textAlign: 'center' }}>Click below to go to your profile page</h3>
+        <div style={{ textAlign: 'center' }}>
+        <Link to={'/profile'} >Your Profile</Link>
+        </div>
         {postForm}
       </Container>
       <Grid container justifyContent={'center'}>

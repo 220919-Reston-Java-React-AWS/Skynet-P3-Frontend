@@ -4,7 +4,10 @@ export interface User {
     id: number,
     email: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    username: string,
+    pic: string;
+    about: string
 }
 
 interface UserContextState {
