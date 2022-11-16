@@ -13,3 +13,4 @@ export const apiUpsertPost = async (post: Post): Promise<socialApiResponse> => {
   const response = await socialClient.put<any>(`${baseURL}`, post);
   return { status: response.status, payload: response.data };
 };
+

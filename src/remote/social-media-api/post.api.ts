@@ -35,6 +35,7 @@ export const apiDeletePost = async (
   const response = await socialClient.delete<any>(`${baseURL}/delete-post`, {
     withCredentials: true, data: post
   });
+  apiGetPosts()
   return { status: response.status, payload: response.data };
 };
 
