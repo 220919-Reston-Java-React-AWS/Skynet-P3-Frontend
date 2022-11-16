@@ -27,6 +27,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
+//Josiah
 import { apiDeleteComment, apiDeletePost, apiUpsertPost } from '../../remote/social-media-api/post.api';
 import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
@@ -86,15 +87,17 @@ export const PostCard = (props: postProps) => {
   const handleDeleteP = async () => {
     let res = await apiDeletePost(post);
     let newPost = res.payload;
-    setDeletedPosts((prev)=> prev +1);
+    setPost(newPost); 
+    console.log(props.post)
   };
 
     // Josiah
-    const handleDeleteC = async () => {
-      let res = await apiDeleteComment(comment);
-      let newPost = res.payload;
-      setDeletedPosts((prev)=> prev +1);
-    };
+    // const handleDeleteC = async () => {
+
+    //   let res = await apiDeleteComment(comment);
+    //   let newPost = res.payload;
+    //   setDeletedPosts((prev)=> prev +1);
+    // };
 
   commentForm = (
     <Paper
@@ -193,7 +196,7 @@ export const PostCard = (props: postProps) => {
               ))}
               {/* Josiah
         <Button variant='text'>
-          <DeleteIcon onClick={handleDeleteP}>
+          <DeleteIcon onClick={handleDeleteC}>
             
           </DeleteIcon>
         </Button> */}
