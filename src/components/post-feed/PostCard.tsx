@@ -2,9 +2,7 @@ import * as React from 'react';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Post from '../../models/Post';
-//Josiah
 import Comment from '../../models/Comment';
-
 import CommentCard from './CommentCard';
 import { Box, Container, Button, Paper, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -21,19 +19,17 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
-// Josiah
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
-//Josiah
 import { apiDeleteComment, apiDeletePost, apiUpsertPost } from '../../remote/social-media-api/post.api';
 import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { apiAddorRemoveLike } from '../../remote/social-media-api/post.api';
+
 
 interface postProps {
   post: Post;
@@ -83,7 +79,6 @@ export const PostCard = (props: postProps) => {
   };
 
   
-  // Josiah
   const handleDeleteP = async () => {
     let res = await apiDeletePost(post);
     let newPost = res.payload;
@@ -91,7 +86,6 @@ export const PostCard = (props: postProps) => {
     console.log(props.post)
   };
 
-    // Josiah
     // const handleDeleteC = async () => {
 
     //   let res = await apiDeleteComment(comment);
@@ -164,8 +158,7 @@ export const PostCard = (props: postProps) => {
           <InsertThumbUpIcon onClick={handleLike} />
         </Button>
         <span>{post.likes.length}</span>
-        
-        {/* Josiah */}
+
         <Button variant='text'>
           <DeleteIcon onClick={handleDeleteP}>
             
@@ -194,7 +187,7 @@ export const PostCard = (props: postProps) => {
                   commenter={comment.commenter}
                 />
               ))}
-              {/* Josiah
+              {/*
         <Button variant='text'>
           <DeleteIcon onClick={handleDeleteC}>
             
