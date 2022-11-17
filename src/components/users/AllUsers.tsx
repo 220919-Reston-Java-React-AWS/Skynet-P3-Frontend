@@ -45,7 +45,7 @@ const AllUsers = () => {
           </Grid>
           <Grid item>
             <Button>
-              <AddCircleIcon onSubmit={() => newFollow(a.id)}></AddCircleIcon>
+              <AddCircleIcon onClick={() => newFollow(a.id)}></AddCircleIcon>
             </Button>
           </Grid>
         </Grid>
@@ -58,11 +58,9 @@ const AllUsers = () => {
     socialClient.get(`${baseURL}`).then((response) => {
       console.log(response);
       setUsers(
-        <Container>
           <Grid container direction="row" spacing={8}>
             {getAll(response.data)}
           </Grid>
-        </Container>
       );
     });
   }, []);

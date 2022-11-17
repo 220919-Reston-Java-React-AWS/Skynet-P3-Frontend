@@ -90,11 +90,11 @@ export const PostCard = (props: postProps) => {
   };
 
     // Josiah
-    const handleDeleteC = async () => {
-      let res = await apiDeleteComment(comment);
-      let newPost = res.payload;
-      setDeletedPosts((prev)=> prev +1);
-    };
+    // const handleDeleteC = async () => {
+    //   let res = await apiDeleteComment(comment);
+    //   let newPost = res.payload;
+    //   setDeletedPosts((prev)=> prev +1);
+    // };
 
   commentForm = (
     <Paper
