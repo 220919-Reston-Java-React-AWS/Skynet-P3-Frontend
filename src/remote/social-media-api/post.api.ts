@@ -1,7 +1,13 @@
 import Post from '../../models/Post';
+
+//Josiah
+import Comment from '../../models/Comment';
 import socialClient, { socialApiResponse } from './socialClient';
 
 const baseURL = '/post';
+
+//Josiah
+const baseurl = '/comment';
 
 export const apiGetPosts = async (): Promise<socialApiResponse> => {
   const response = await socialClient.get<any>(baseURL);
@@ -32,4 +38,14 @@ export const apiDeletePost = async (
   });
   return { status: response.status, payload: response.data };
 };
-  
+
+
+// Josiah
+export const apiDeleteComment = async (
+  comment: Comment
+): Promise<socialApiResponse> => {
+  const response = await socialClient.delete<any>(`${baseurl}/delete-comment`, {
+    withCredentials: true, data: comment
+  });
+  return { status: response.status, payload: response.data };
+};
