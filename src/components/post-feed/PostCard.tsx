@@ -32,7 +32,10 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { apiAddorRemoveLike } from "../../remote/social-media-api/post.api";
-import { apiGetAllComments, apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
+import {
+  apiGetAllComments,
+  apiGetAllPosts,
+} from "../../remote/social-media-api/postFeed.api";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 interface postProps {
@@ -45,8 +48,6 @@ interface postProps {
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
-
-
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
@@ -65,14 +66,13 @@ export const PostCard = (props: postProps) => {
     setExpanded(!expanded);
   };
 
-    //move this
-    const handleDeleteC = async (comment: Comment) => {
-
-      let res = await apiDeleteComment(comment);
-      let allComments = await apiGetAllComments();
-      setComments(allComments.payload);
-      console.log(comments);
-    };
+  //move this
+  const handleDeleteC = async (comment: Comment) => {
+    let res = await apiDeleteComment(comment);
+    let allComments = await apiGetAllComments();
+    setComments(allComments.payload);
+    console.log(comments);
+  };
 
   let media = <></>;
   let commentForm = <></>;
@@ -184,14 +184,14 @@ export const PostCard = (props: postProps) => {
                   key={comment.id}
                   commenter={comment.commenter}
                 >
-                                <Button
-                variant="text"
-                onClick={() => {
-                  handleDeleteC(comment);
-                }}
-              >
-                <DeleteIcon></DeleteIcon>
-              </Button>
+                  <Button
+                    variant="text"
+                    onClick={() => {
+                      handleDeleteC(comment);
+                    }}
+                  >
+                    <DeleteIcon></DeleteIcon>
+                  </Button>
                 </CommentCard>
               ))}
             </Grid>
