@@ -3,16 +3,14 @@ import { Box, Container, Grid, Button } from "@mui/material";
 import Navbar from "../navbar/Navbar";
 import { PostCard } from "./PostCard";
 import Post from "../../models/Post";
-import { apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
+import { apiGetAllComments, apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
 import { useContext } from "react";
 import { UserContext } from "../../context/user.context";
 import TextField from "@mui/material/TextField";
-import {
-  apiDeletePost,
-  apiUpsertPost,
-} from "../../remote/social-media-api/post.api";
+import { apiDeleteComment, apiDeletePost, apiUpsertPost } from "../../remote/social-media-api/post.api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
+import Comment from "../../models/Comment";
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -27,12 +25,7 @@ export const PostFeed = () => {
     console.log(posts);
   };
 
-  // const handleDeleteC = async () => {
 
-  //   let res = await apiDeleteComment(comment);
-  //   let newPost = res.payload;
-  //   setDeletedPosts((prev)=> prev +1);
-  // };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

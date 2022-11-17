@@ -32,7 +32,8 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { apiAddorRemoveLike } from "../../remote/social-media-api/post.api";
-import { apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
+import { apiGetAllComments, apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface postProps {
   post: Post;
@@ -45,6 +46,8 @@ interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
+
+
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -56,11 +59,20 @@ export const PostCard = (props: postProps) => {
   const { user } = useContext(UserContext);
   const [expanded, setExpanded] = React.useState(false);
   const [post, setPost] = useState(props.post);
-  const [deletedPosts, setDeletedPosts] = useState(0);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+    //move this
+    const handleDeleteC = async (comment: Comment) => {
+
+      let res = await apiDeleteComment(comment);
+      let allComments = await apiGetAllComments();
+      setComments(allComments.payload);
+      console.log(comments);
+    };
 
   let media = <></>;
   let commentForm = <></>;
@@ -171,7 +183,16 @@ export const PostCard = (props: postProps) => {
                   text={comment.text}
                   key={comment.id}
                   commenter={comment.commenter}
-                />
+                >
+                                <Button
+                variant="text"
+                onClick={() => {
+                  handleDeleteC(comment);
+                }}
+              >
+                <DeleteIcon></DeleteIcon>
+              </Button>
+                </CommentCard>
               ))}
             </Grid>
           </Grid>

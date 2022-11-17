@@ -8,8 +8,14 @@ const baseURL = '/post';
 
 const baseurl = '/comment';
 
+
 export const apiGetPosts = async (): Promise<socialApiResponse> => {
   const response = await socialClient.get<any>(baseURL);
+  return { status: response.status, payload: response.data };
+};
+
+export const apiGetComments = async (): Promise<socialApiResponse> => {
+  const response = await socialClient.get<any>(baseurl);
   return { status: response.status, payload: response.data };
 };
 
@@ -40,10 +46,11 @@ export const apiDeletePost = async (
 };
 
 export const apiDeleteComment = async (
-  comment: Comment
+  comment:Comment
 ): Promise<socialApiResponse> => {
   const response = await socialClient.delete<any>(`${baseurl}/delete-comment`, {
-    withCredentials: true, data: comment
+    withCredentials: true, data: {post: Post, comment: Comment}
   });
+  apiGetComments()
   return { status: response.status, payload: response.data };
 };
