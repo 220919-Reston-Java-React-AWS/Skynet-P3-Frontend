@@ -25,6 +25,7 @@ import TextField from "@mui/material/TextField";
 import {
   apiDeleteComment,
   apiDeletePost,
+  apiUpsertComment,
   apiUpsertPost,
 } from "../../remote/social-media-api/post.api";
 import { UserContext } from "../../context/user.context";
@@ -37,6 +38,7 @@ import {
   apiGetAllPosts,
 } from "../../remote/social-media-api/postFeed.api";
 import DeleteIcon from "@mui/icons-material/Delete";
+// import React, { useEffect, useState } from "react";
 
 interface postProps {
   post: Post;
@@ -60,13 +62,12 @@ export const PostCard = (props: postProps) => {
   const { user } = useContext(UserContext);
   const [expanded, setExpanded] = React.useState(false);
   const [post, setPost] = useState(props.post);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState(post.comments);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  //move this
   const handleDeleteC = async (comment: Comment) => {
     let res = await apiDeleteComment(comment);
     let allComments = await apiGetAllComments();
@@ -80,11 +81,17 @@ export const PostCard = (props: postProps) => {
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    props.post.comments.push(
-      new Comment(0, data.get("commentText")?.toString() || "", user)
-    );
-    let payload = props.post;
-    await apiUpsertPost(payload);
+    // // props.post.comments.push(
+    //   new Comment(0, data.get("commentText")?.toString() || "", user)
+    // );
+    let newCommentString = data.get("commentText")?.toString();
+    if (newCommentString == null) {
+      newCommentString = "empty comment";
+    }
+    setComments([...comments, new Comment(0, newCommentString, user, post.id)]);
+    let payload = new Comment(0, newCommentString, user, post.id);
+    await apiUpsertComment(payload);
+    console.log(payload);
   };
 
   const handleLike = async () => {
@@ -95,6 +102,7 @@ export const PostCard = (props: postProps) => {
     console.log(res.payload.likes);
   };
 
+  //Josiah
   commentForm = (
     <Paper
       component="form"
@@ -112,6 +120,7 @@ export const PostCard = (props: postProps) => {
         sx={{ ml: 1, flex: 1 }}
         id="commentText"
         name="commentText"
+        required
         placeholder="Make a comment..."
         inputProps={{ "aria-label": "Make a comment" }}
       />

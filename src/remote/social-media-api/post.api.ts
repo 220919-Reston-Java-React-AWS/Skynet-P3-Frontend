@@ -26,6 +26,13 @@ export const apiUpsertPost = async (post: any): Promise<socialApiResponse> => {
   return { status: response.status, payload: response.data };
 };
 
+export const apiUpsertComment = async (comment: any): Promise<socialApiResponse> => {
+  const response = await socialClient.put<any>(baseurl, comment, {
+    withCredentials: true,
+  });
+  return { status: response.status, payload: response.data };
+};
+
 export const apiAddorRemoveLike = async (
   post: Post
 ): Promise<socialApiResponse> => {
@@ -46,7 +53,7 @@ export const apiDeletePost = async (
 };
 
 export const apiDeleteComment = async (
-  comment:Comment
+  comment: Comment
 ): Promise<socialApiResponse> => {
   const response = await socialClient.delete<any>(`${baseurl}/delete-comment`, {
     withCredentials: true, data: {post: Post, comment: Comment}
@@ -54,3 +61,5 @@ export const apiDeleteComment = async (
   apiGetComments()
   return { status: response.status, payload: response.data };
 };
+
+
