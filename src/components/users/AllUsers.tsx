@@ -12,11 +12,13 @@ const AllUsers = () => {
 
   const [users, setUsers] = useState(<></>);
   // const { user } = useContext(UserContext);
-  function newFollow(id: number) {
-    socialClient.post(`${baseURL1}`, { id: { id } }).then((response) => {
+  function newFollow(i: number) {
+    socialClient.put(`${baseURL1}`, { userId: i }).then((response) => {
       console.log(response.data);
+      return response.data;
     });
   };
+
 
   function getAll(a: IUser[]) {
     const list = a.map((a) => {
