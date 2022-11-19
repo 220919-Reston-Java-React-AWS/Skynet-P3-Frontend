@@ -1,13 +1,11 @@
 import Post from '../../models/Post';
 
-
 import Comment from '../../models/Comment';
 import socialClient, { socialApiResponse } from './socialClient';
 
 const baseURL = '/post';
 
 const baseurl = '/comment';
-
 
 export const apiGetPosts = async (): Promise<socialApiResponse> => {
   const response = await socialClient.get<any>(baseURL);
@@ -26,6 +24,15 @@ export const apiUpsertPost = async (post: any): Promise<socialApiResponse> => {
   return { status: response.status, payload: response.data };
 };
 
+export const apiUpsertComment = async (
+  comment: any
+): Promise<socialApiResponse> => {
+  const response = await socialClient.put<any>(baseurl, comment, {
+    withCredentials: true,
+  });
+  return { status: response.status, payload: response.data };
+};
+
 export const apiAddorRemoveLike = async (
   post: Post
 ): Promise<socialApiResponse> => {
@@ -35,22 +42,22 @@ export const apiAddorRemoveLike = async (
   return { status: response.status, payload: response.data };
 };
 
-export const apiDeletePost = async (
-  post: Post
-): Promise<socialApiResponse> => {
+export const apiDeletePost = async (post: Post): Promise<socialApiResponse> => {
   const response = await socialClient.delete<any>(`${baseURL}/delete-post`, {
-    withCredentials: true, data: post
+    withCredentials: true,
+    data: post,
   });
-  apiGetPosts()
+  apiGetPosts();
   return { status: response.status, payload: response.data };
 };
 
 export const apiDeleteComment = async (
-  comment:Comment
+  comment: Comment
 ): Promise<socialApiResponse> => {
   const response = await socialClient.delete<any>(`${baseurl}/delete-comment`, {
-    withCredentials: true, data: {post: Post, comment: Comment}
+    withCredentials: true,
+    data: comment,
   });
-  apiGetComments()
+  apiGetComments();
   return { status: response.status, payload: response.data };
 };
