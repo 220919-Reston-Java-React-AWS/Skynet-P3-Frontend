@@ -56,7 +56,6 @@ export const PostCard = (props: postProps) => {
     setExpanded(!expanded);
   };
 
-  //move this
   const handleDeleteC = async (comment: Comment) => {
     console.log(comment.id);
     let res = await apiDeleteComment(comment);
@@ -92,6 +91,7 @@ export const PostCard = (props: postProps) => {
     console.log(res.payload.likes);
   };
 
+  //Josiah
   commentForm = (
     <Paper
       component='form'

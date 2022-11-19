@@ -1,3 +1,5 @@
+import Post from './Post';
+
 export default class Comment {
   id: number;
   text: string;
