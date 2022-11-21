@@ -1,7 +1,7 @@
 import Comment from './Comment';
 
 export default class Post {
-  id: number;
+  postId: number;
   text: string;
   imageUrl: string;
   comments: Comment[];
@@ -9,14 +9,14 @@ export default class Post {
   likes: any[];
 
   constructor(
-    id: number,
+    postId: number,
     text: string,
     imageUrl: string,
     comments: Comment[],
     author: any,
     likes: any[]
   ) {
-    this.id = id;
+    this.postId = postId;
     this.text = text;
     this.imageUrl = imageUrl;
     this.comments = comments;

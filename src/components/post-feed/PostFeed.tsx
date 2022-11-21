@@ -7,14 +7,25 @@ import { apiGetAllPosts } from '../../remote/social-media-api/postFeed.api';
 import { useContext } from 'react';
 import { UserContext } from '../../context/user.context';
 import TextField from '@mui/material/TextField';
-import { apiUpsertPost } from '../../remote/social-media-api/post.api';
+import {
+  apiDeletePost,
+  apiUpsertPost,
+} from '../../remote/social-media-api/post.api';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 
 export const PostFeed = () => {
-  const [post, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const { user } = useContext(UserContext);
   let welcomeText = 'Welcome!';
   let postForm = <></>;
+
+  const handleDeleteP = async (post: Post) => {
+    let res = await apiDeletePost(post);
+    let allPosts = await apiGetAllPosts();
+    setPosts(allPosts.payload);
+    console.log(posts);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -72,7 +83,7 @@ export const PostFeed = () => {
 
   let noPostsText = <></>;
 
-  if (post.length === 0) {
+  if (posts.length === 0) {
     noPostsText = (
       <h2 style={{ textAlign: 'center', marginTop: '3%', color: 'gray' }}>
         There are no posts, share your thoughts!
@@ -91,16 +102,28 @@ export const PostFeed = () => {
         }}
       >
         <h2 style={{ textAlign: 'center' }}>{welcomeText}</h2>
-        <h3 style={{ textAlign: 'center' }}>Click below to go to your profile page</h3>
+        <h3 style={{ textAlign: 'center' }}>
+          Click below to go to your profile page
+        </h3>
         <div style={{ textAlign: 'center' }}>
-        <Link to={'/profile'} >Your Profile</Link>
+          <Link to={'/profile'}>Your Profile</Link>
         </div>
         {postForm}
       </Container>
       <Grid container justifyContent={'center'}>
         <Grid item sx={{ width: '60%', mb: '20px' }}>
-          {post.map((item) => (
-            <PostCard post={item} key={item.id} />
+          {posts.map((item) => (
+            <PostCard post={item} key={item.postId} updatePosts={setPosts}>
+              <Button
+                variant='text'
+                onClick={() => {
+                  handleDeleteP(item);
+                }}
+              >
+                <DeleteIcon></DeleteIcon>
+                {item.postId}
+              </Button>
+            </PostCard>
           ))}
         </Grid>
       </Grid>

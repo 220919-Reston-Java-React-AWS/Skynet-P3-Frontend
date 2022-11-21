@@ -2,11 +2,9 @@ import * as React from 'react';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Post from '../../models/Post';
-//Josiah
 import Comment from '../../models/Comment';
-
 import CommentCard from './CommentCard';
-import { Box, Container, Button, Paper, Grid } from '@mui/material';
+import { Button, Paper, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,28 +14,26 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { orange, red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
-// Josiah
-import DeleteIcon from '@mui/icons-material/Delete';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
-import TextField from '@mui/material/TextField';
-//Josiah
-import { apiDeleteComment, apiDeletePost, apiUpsertPost } from '../../remote/social-media-api/post.api';
+import {
+  apiDeleteComment,
+  apiUpsertComment,
+} from '../../remote/social-media-api/post.api';
 import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { apiAddorRemoveLike } from '../../remote/social-media-api/post.api';
+import { apiGetAllComments } from '../../remote/social-media-api/postFeed.api';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface postProps {
   post: Post;
   key: number;
+  updatePosts: Function;
+  readonly children: React.ReactNode;
 }
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -55,10 +51,17 @@ export const PostCard = (props: postProps) => {
   const { user } = useContext(UserContext);
   const [expanded, setExpanded] = React.useState(false);
   const [post, setPost] = useState(props.post);
-  const [deletedPosts, setDeletedPosts] = useState(0);
-
+  const [comments, setComments] = useState(post.comments);
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleDeleteC = async (comment: Comment) => {
+    console.log(comment.id);
+    let res = await apiDeleteComment(comment);
+    let allComments = await apiGetAllComments();
+    setComments(allComments.payload);
+    console.log(comments);
   };
 
   let media = <></>;
@@ -67,11 +70,17 @@ export const PostCard = (props: postProps) => {
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    props.post.comments.push(
-      new Comment(0, data.get('commentText')?.toString() || '', user)
-    );
-    let payload = props.post;
-    await apiUpsertPost(payload);
+    // props.post.comments.push(
+    //   new Comment(0, data.get("commentText")?.toString() || "", user)
+    // );
+    let newCommentString = data.get('commentText')?.toString();
+    if (newCommentString == null) {
+      newCommentString = 'empty comment';
+    }
+    setComments([...comments, new Comment(0, newCommentString, user, post)]);
+    let payload = new Comment(0, newCommentString, user, post);
+    console.log(payload);
+    await apiUpsertComment(payload);
   };
 
   const handleLike = async () => {
@@ -82,23 +91,7 @@ export const PostCard = (props: postProps) => {
     console.log(res.payload.likes);
   };
 
-  
-  // Josiah
-  const handleDeleteP = async () => {
-    let res = await apiDeletePost(post);
-    let newPost = res.payload;
-    setPost(newPost); 
-    console.log(props.post)
-  };
-
-    // Josiah
-    // const handleDeleteC = async () => {
-
-    //   let res = await apiDeleteComment(comment);
-    //   let newPost = res.payload;
-    //   setDeletedPosts((prev)=> prev +1);
-    // };
-
+  //Josiah
   commentForm = (
     <Paper
       component='form'
@@ -116,6 +109,7 @@ export const PostCard = (props: postProps) => {
         sx={{ ml: 1, flex: 1 }}
         id='commentText'
         name='commentText'
+        required
         placeholder='Make a comment...'
         inputProps={{ 'aria-label': 'Make a comment' }}
       />
@@ -164,14 +158,9 @@ export const PostCard = (props: postProps) => {
           <InsertThumbUpIcon onClick={handleLike} />
         </Button>
         <span>{post.likes.length}</span>
-        
-        {/* Josiah */}
-        <Button variant='text'>
-          <DeleteIcon onClick={handleDeleteP}>
-            
-          </DeleteIcon>
-        </Button>
-        
+
+        {props.children}
+
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -192,14 +181,17 @@ export const PostCard = (props: postProps) => {
                   text={comment.text}
                   key={comment.id}
                   commenter={comment.commenter}
-                />
+                >
+                  <Button
+                    variant='text'
+                    onClick={() => {
+                      handleDeleteC(comment);
+                    }}
+                  >
+                    <DeleteIcon></DeleteIcon>
+                  </Button>
+                </CommentCard>
               ))}
-              {/* Josiah
-        <Button variant='text'>
-          <DeleteIcon onClick={handleDeleteC}>
-            
-          </DeleteIcon>
-        </Button> */}
             </Grid>
           </Grid>
         </CardContent>
