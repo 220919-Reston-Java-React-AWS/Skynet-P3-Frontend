@@ -2,6 +2,7 @@ import Post from '../../models/Post';
 
 import Comment from '../../models/Comment';
 import socialClient, { socialApiResponse } from './socialClient';
+import { AxiosError } from 'axios';
 
 const baseURL = '/post';
 
@@ -27,19 +28,27 @@ export const apiUpsertPost = async (post: any): Promise<socialApiResponse> => {
 export const apiUpsertComment = async (
   comment: any
 ): Promise<socialApiResponse> => {
-  const response = await socialClient.put<any>(baseurl, comment, {
-    withCredentials: true,
-  });
-  return { status: response.status, payload: response.data };
+  try {
+    const response = await socialClient.put<any>(baseurl, comment, {
+      withCredentials: true,
+    });
+    return { status: response.status, payload: response.data };
+  } catch (e: any) {
+    throw e;
+  }
 };
 
 export const apiAddorRemoveLike = async (
   post: Post
 ): Promise<socialApiResponse> => {
-  const response = await socialClient.put<any>(`${baseURL}/like`, post, {
-    withCredentials: true,
-  });
-  return { status: response.status, payload: response.data };
+  try {
+    const response = await socialClient.put<any>(`${baseURL}/like`, post, {
+      withCredentials: true,
+    });
+    return { status: response.status, payload: response.data };
+  } catch (e: any) {
+    throw e;
+  }
 };
 
 export const apiDeletePost = async (post: Post): Promise<socialApiResponse> => {

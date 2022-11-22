@@ -58,7 +58,7 @@ export const PostCard = (props: postProps) => {
 
   const handleDeleteC = async (comment: Comment) => {
     console.log(comment.id);
-    let res = await apiDeleteComment(comment);
+    await apiDeleteComment(comment);
     let allComments = await apiGetAllComments();
     setComments(allComments.payload);
     console.log(comments);
@@ -70,25 +70,38 @@ export const PostCard = (props: postProps) => {
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // props.post.comments.push(
-    //   new Comment(0, data.get("commentText")?.toString() || "", user)
-    // );
-    let newCommentString = data.get('commentText')?.toString();
-    if (newCommentString == null) {
-      newCommentString = 'empty comment';
+    try {
+      let newCommentString = data.get('commentText')?.toString();
+      if (newCommentString == null) {
+        newCommentString = 'empty comment';
+      }
+      setComments([...comments, new Comment(0, newCommentString, user, post)]);
+      let payload = new Comment(0, newCommentString, user, post);
+      console.log(payload);
+      await apiUpsertComment(payload);
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        alert('You must be logged in to comment.');
+      } else {
+        alert(e.response.status);
+      }
     }
-    setComments([...comments, new Comment(0, newCommentString, user, post)]);
-    let payload = new Comment(0, newCommentString, user, post);
-    console.log(payload);
-    await apiUpsertComment(payload);
   };
 
   const handleLike = async () => {
-    let res = await apiAddorRemoveLike(post);
-    let newPost = res.payload;
-    setPost(newPost);
-    console.log(props.post.likes);
-    console.log(res.payload.likes);
+    try {
+      let res = await apiAddorRemoveLike(post);
+      let newPost = res.payload;
+      setPost(newPost);
+      console.log(props.post.likes);
+      console.log(res.payload.likes);
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        alert('You must be logged in to like.');
+      } else {
+        alert(e.response.status);
+      }
+    }
   };
 
   //Josiah
@@ -182,14 +195,16 @@ export const PostCard = (props: postProps) => {
                   key={comment.id}
                   commenter={comment.commenter}
                 >
-                  <Button
-                    variant='text'
-                    onClick={() => {
-                      handleDeleteC(comment);
-                    }}
-                  >
-                    <DeleteIcon></DeleteIcon>
-                  </Button>
+                  {user && (
+                    <Button
+                      variant='text'
+                      onClick={() => {
+                        handleDeleteC(comment);
+                      }}
+                    >
+                      <DeleteIcon></DeleteIcon>
+                    </Button>
+                  )}
                 </CommentCard>
               ))}
             </Grid>
