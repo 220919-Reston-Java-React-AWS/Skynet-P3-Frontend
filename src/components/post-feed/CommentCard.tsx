@@ -2,6 +2,7 @@ interface CommentProps {
   text: string;
   key: number;
   commenter: { firstName: string; lastName: string };
+  updateComments: Function;
   readonly children: React.ReactNode;
 }
 

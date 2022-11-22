@@ -1,4 +1,5 @@
 import Post from '../../models/Post';
+import Comment from '../../models/Comment';
 import socialClient, { socialApiResponse } from './socialClient';
 
 const baseURL = '/post';
@@ -18,5 +19,14 @@ export const apiGetAllComments = async (): Promise<socialApiResponse> => {
 
 export const apiUpsertPost = async (post: Post): Promise<socialApiResponse> => {
   const response = await socialClient.put<any>(`${baseURL}`, post);
+  return { status: response.status, payload: response.data };
+};
+
+export const apiUpsertComment = async (
+  comment: Comment
+): Promise<socialApiResponse> => {
+  const response = await socialClient.put<any>(`${baseurl}`, comment, {
+    withCredentials: true,
+  });
   return { status: response.status, payload: response.data };
 };

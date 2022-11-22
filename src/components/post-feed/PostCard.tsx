@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Post from '../../models/Post';
 import Comment from '../../models/Comment';
@@ -26,7 +26,10 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { apiAddorRemoveLike } from '../../remote/social-media-api/post.api';
-import { apiGetAllComments } from '../../remote/social-media-api/postFeed.api';
+import {
+  apiGetAllComments,
+  apiGetAllPosts,
+} from '../../remote/social-media-api/postFeed.api';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface postProps {
@@ -60,14 +63,15 @@ export const PostCard = (props: postProps) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      let newCommentString = data.get('commentText')?.toString();
-      if (newCommentString == null) {
-        newCommentString = 'empty comment';
-      }
-      setComments([...comments, new Comment(0, newCommentString, user, post)]);
-      let payload = new Comment(0, newCommentString, user, post);
-      console.log(payload);
+      let payload = new Comment(
+        0,
+        data.get('commentText')?.toString() || '',
+        user,
+        post
+      );
       await apiUpsertComment(payload);
+
+      fetchData();
     } catch (e: any) {
       if (e.response.status === 401) {
         alert('You must be logged in to comment.');
@@ -85,9 +89,6 @@ export const PostCard = (props: postProps) => {
     console.log(comments);
   };
 
-  let media = <></>;
-  let commentForm = <></>;
-
   const handleLike = async () => {
     try {
       let res = await apiAddorRemoveLike(post);
@@ -104,7 +105,9 @@ export const PostCard = (props: postProps) => {
     }
   };
 
-  //Josiah
+  let media = <></>;
+  let commentForm = <></>;
+
   commentForm = (
     <Paper
       component='form'
@@ -132,6 +135,17 @@ export const PostCard = (props: postProps) => {
       </IconButton>
     </Paper>
   );
+
+  const fetchData = async () => {
+    const result = await apiGetAllComments();
+    setComments(result.payload.reverse());
+    props.post.comments = result.payload.reverse();
+    setPost(props.post);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   if (props.post.imageUrl) {
     media = (
@@ -189,11 +203,12 @@ export const PostCard = (props: postProps) => {
           <Typography paragraph>comments:</Typography>
           <Grid container justifyContent={'center'}>
             <Grid item sx={{ width: '100%' }}>
-              {props.post.comments.map((comment) => (
+              {comments.map((comment) => (
                 <CommentCard
                   text={comment.text}
                   key={comment.id}
                   commenter={comment.commenter}
+                  updateComments={setComments}
                 >
                   {user && (
                     <Button
