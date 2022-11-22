@@ -182,17 +182,17 @@ export const PostCard = (props: postProps) => {
           <Typography paragraph>comments:</Typography>
           <Grid container justifyContent={"center"}>
             <Grid item sx={{ width: "100%" }}>
-              {props.post.comments.map((comment) => (
+              {comments.map((item) => (
                 <CommentCard
-                  text={comment.text}
-                  key={comment.id}
-                  commenter={comment.commenter}
+                  text={item.text}
+                  key={item.id}
+                  commenter={item.commenter}
                   updateComments={setComments}
                 >
                   <Button
                     variant="text"
                     onClick={() => {
-                      handleDeleteC(comment);
+                      handleDeleteC(item);
                     }}
                   >
                     <DeleteIcon></DeleteIcon>
