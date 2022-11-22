@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import Post from "../../models/Post";
 import Comment from "../../models/Comment";
@@ -122,7 +122,7 @@ export const PostCard = (props: postProps) => {
     setComments(result.payload.reverse());
   };
 
-  useEnhancedEffect(() => {
+  useEffect(() => {
     fetchData();
   }, []);
 
