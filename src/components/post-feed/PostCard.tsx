@@ -56,17 +56,6 @@ export const PostCard = (props: postProps) => {
     setExpanded(!expanded);
   };
 
-  const handleDeleteC = async (comment: Comment) => {
-    console.log(comment.id);
-    await apiDeleteComment(comment);
-    let allComments = await apiGetAllComments();
-    setComments(allComments.payload);
-    console.log(comments);
-  };
-
-  let media = <></>;
-  let commentForm = <></>;
-
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -87,6 +76,17 @@ export const PostCard = (props: postProps) => {
       }
     }
   };
+
+  const handleDeleteC = async (comment: Comment) => {
+    console.log(comment.id);
+    await apiDeleteComment(comment);
+    let allComments = await apiGetAllComments();
+    setComments(allComments.payload);
+    console.log(comments);
+  };
+
+  let media = <></>;
+  let commentForm = <></>;
 
   const handleLike = async () => {
     try {
