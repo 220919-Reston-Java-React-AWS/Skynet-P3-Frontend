@@ -1,37 +1,37 @@
-import * as React from "react";
-import { useContext, useState, useEffect } from "react";
-import styled from "styled-components";
-import Post from "../../models/Post";
-import Comment from "../../models/Comment";
-import CommentCard from "./CommentCard";
-import { Button, Paper, Grid } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InsertCommentIcon from "@mui/icons-material/InsertComment";
-import InsertThumbUpIcon from "@mui/icons-material/ThumbUpAlt";
-import PersonIcon from "@mui/icons-material/Person";
+import * as React from 'react';
+import { useContext, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Post from '../../models/Post';
+import Comment from '../../models/Comment';
+import CommentCard from './CommentCard';
+import { Button, Paper, Grid } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import InsertCommentIcon from '@mui/icons-material/InsertComment';
+import InsertThumbUpIcon from '@mui/icons-material/ThumbUpAlt';
+import PersonIcon from '@mui/icons-material/Person';
 import {
   apiDeleteComment,
   apiUpsertComment,
-} from "../../remote/social-media-api/post.api";
-import { UserContext } from "../../context/user.context";
-import InputBase from "@mui/material/InputBase";
-import Divider from "@mui/material/Divider";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { apiAddorRemoveLike } from "../../remote/social-media-api/post.api";
+
+} from '../../remote/social-media-api/post.api';
+import { UserContext } from '../../context/user.context';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { apiAddorRemoveLike } from '../../remote/social-media-api/post.api';
 import {
   apiGetAllComments,
   apiGetAllPosts,
-} from "../../remote/social-media-api/postFeed.api";
-import DeleteIcon from "@mui/icons-material/Delete";
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
+} from '../../remote/social-media-api/postFeed.api';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface postProps {
   post: Post;
@@ -48,7 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  marginLeft: "auto",
+  marginLeft: 'auto',
 }));
 
 export const PostCard = (props: postProps) => {
@@ -71,10 +71,12 @@ export const PostCard = (props: postProps) => {
         post
       );
       await apiUpsertComment(payload);
+
+
       fetchData();
     } catch (e: any) {
       if (e.response.status === 401) {
-        alert("You must be logged in to comment.");
+        alert('You must be logged in to comment.');
       } else {
         alert(e.response.status);
       }
@@ -82,18 +84,27 @@ export const PostCard = (props: postProps) => {
   };
 
   const handleDeleteC = async (comment: Comment) => {
-    let res = await apiDeleteComment(comment);
+
+    await apiDeleteComment(comment);
     let allComments = await apiGetAllComments();
     setComments(allComments.payload);
     console.log(comments);
   };
 
   const handleLike = async () => {
-    let res = await apiAddorRemoveLike(post);
-    let newPost = res.payload;
-    setPost(newPost);
-    console.log(props.post.likes);
-    console.log(res.payload.likes);
+    try {
+      let res = await apiAddorRemoveLike(post);
+      let newPost = res.payload;
+      setPost(newPost);
+      console.log(props.post.likes);
+      console.log(res.payload.likes);
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        alert('You must be logged in to like.');
+      } else {
+        alert(e.response.status);
+      }
+    }
   };
 
   let media = <></>;
@@ -101,28 +112,28 @@ export const PostCard = (props: postProps) => {
 
   commentForm = (
     <Paper
-      component="form"
+      component='form'
       sx={{
-        p: "4px 0",
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-        mb: "15px",
+        p: '4px 0',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        mb: '15px',
       }}
       elevation={1}
       onSubmit={handleComment}
     >
       <InputBase
         sx={{ ml: 1, flex: 1 }}
-        id="commentText"
-        name="commentText"
+        id='commentText'
+        name='commentText'
         required
-        placeholder="Make a comment..."
-        inputProps={{ "aria-label": "Make a comment" }}
+        placeholder='Make a comment...'
+        inputProps={{ 'aria-label': 'Make a comment' }}
       />
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton type="submit" sx={{ p: "10px" }} aria-label="submit">
-        <AddCircleIcon color="warning" />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation='vertical' />
+      <IconButton type='submit' sx={{ p: '10px' }} aria-label='submit'>
+        <AddCircleIcon color='warning' />
       </IconButton>
     </Paper>
   );
@@ -141,25 +152,25 @@ export const PostCard = (props: postProps) => {
   if (props.post.imageUrl) {
     media = (
       <CardMedia
-        component="img"
+        component='img'
         src={props.post.imageUrl}
-        alt="post image"
+        alt='post image'
         sx={{
-          maxHeight: "300px",
-          width: "auto",
-          marginLeft: "auto",
-          marginRight: "auto",
+          maxHeight: '300px',
+          width: 'auto',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}
       />
     );
   }
 
   return (
-    <Card sx={{ maxWidth: "100%", marginTop: "3%" }}>
+    <Card sx={{ maxWidth: '100%', marginTop: '3%' }}>
       <CardHeader
         title={props.post.author.firstName}
         avatar={
-          <Avatar sx={{ bgcolor: "#ed6c02" }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: '#ed6c02' }} aria-label='recipe'>
             <PersonIcon />
           </Avatar>
         }
@@ -167,12 +178,12 @@ export const PostCard = (props: postProps) => {
 
       {media}
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant='body2' color='text.secondary'>
           {props.post.text}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button variant="text">
+        <Button variant='text'>
           <InsertThumbUpIcon onClick={handleLike} />
         </Button>
         <span>{post.likes.length}</span>
@@ -183,22 +194,22 @@ export const PostCard = (props: postProps) => {
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
-          aria-label="show more"
+          aria-label='show more'
         >
           <InsertCommentIcon />
         </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expanded} timeout='auto' unmountOnExit>
         <CardContent>
           {commentForm}
           <Typography paragraph>comments:</Typography>
-          <Grid container justifyContent={"center"}>
-            <Grid item sx={{ width: "100%" }}>
-              {comments.map((item) => (
+          <Grid container justifyContent={'center'}>
+            <Grid item sx={{ width: '100%' }}>
+              {comments.map((comment) => (
                 <CommentCard
-                  text={item.text}
-                  key={item.id}
-                  commenter={item.commenter}
+                  text={comment.text}
+                  key={comment.id}
+                  commenter={comment.commenter}
                   updateComments={setComments}
                 >
                 {user && item.commenter.id === user.id &&
