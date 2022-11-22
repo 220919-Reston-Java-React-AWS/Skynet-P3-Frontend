@@ -114,15 +114,17 @@ export const PostFeed = () => {
         <Grid item sx={{ width: '60%', mb: '20px' }}>
           {posts.map((item) => (
             <PostCard post={item} key={item.postId} updatePosts={setPosts}>
-              {user && (
+
+              {user && item.author.id === user.id && (
                 <Button
-                  variant='text'
+                  variant="text"
+
                   onClick={() => {
                     handleDeleteP(item);
                   }}
                 >
                   <DeleteIcon></DeleteIcon>
-                  {item.postId}
+                  {/* {item.postId} */}
                 </Button>
               )}
             </PostCard>

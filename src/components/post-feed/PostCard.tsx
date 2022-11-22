@@ -20,6 +20,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import {
   apiDeleteComment,
   apiUpsertComment,
+
 } from '../../remote/social-media-api/post.api';
 import { UserContext } from '../../context/user.context';
 import InputBase from '@mui/material/InputBase';
@@ -65,11 +66,12 @@ export const PostCard = (props: postProps) => {
     try {
       let payload = new Comment(
         0,
-        data.get('commentText')?.toString() || '',
+        data.get("commentText")?.toString() || "",
         user,
         post
       );
       await apiUpsertComment(payload);
+
 
       fetchData();
     } catch (e: any) {
@@ -82,7 +84,7 @@ export const PostCard = (props: postProps) => {
   };
 
   const handleDeleteC = async (comment: Comment) => {
-    console.log(comment.id);
+
     await apiDeleteComment(comment);
     let allComments = await apiGetAllComments();
     setComments(allComments.payload);
@@ -210,16 +212,18 @@ export const PostCard = (props: postProps) => {
                   commenter={comment.commenter}
                   updateComments={setComments}
                 >
-                  {user && (
-                    <Button
-                      variant='text'
-                      onClick={() => {
-                        handleDeleteC(comment);
-                      }}
-                    >
-                      <DeleteIcon></DeleteIcon>
-                    </Button>
-                  )}
+                {user && item.commenter.id === user.id &&
+                  <Button
+                    variant="text"
+                    onClick={() => {
+                      handleDeleteC(item);
+                    }}
+                  >
+                    <DeleteIcon></DeleteIcon>
+                    {/* {comment.id} */}
+                  </Button>
+                } 
+                
                 </CommentCard>
               ))}
             </Grid>
