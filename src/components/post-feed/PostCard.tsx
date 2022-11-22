@@ -201,6 +201,7 @@ export const PostCard = (props: postProps) => {
                   commenter={item.commenter}
                   updateComments={setComments}
                 >
+                {user && item.commenter.id === user.id &&
                   <Button
                     variant="text"
                     onClick={() => {
@@ -210,6 +211,8 @@ export const PostCard = (props: postProps) => {
                     <DeleteIcon></DeleteIcon>
                     {/* {comment.id} */}
                   </Button>
+                } 
+                
                 </CommentCard>
               ))}
             </Grid>
