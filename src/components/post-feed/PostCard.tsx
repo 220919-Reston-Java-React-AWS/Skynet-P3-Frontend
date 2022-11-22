@@ -26,7 +26,7 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { apiAddorRemoveLike } from "../../remote/social-media-api/post.api";
-import { apiGetAllComments } from "../../remote/social-media-api/postFeed.api";
+import { apiGetAllComments, apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
@@ -60,18 +60,26 @@ export const PostCard = (props: postProps) => {
   const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    let payload = new Comment(
-      0,
-      data.get("commentText")?.toString() || "",
-      user,
-      post
-    );
-    await apiUpsertComment(payload);
-    fetchData();
+    try {
+      let payload = new Comment(
+        0,
+        data.get('commentText')?.toString() || '',
+        user,
+        post
+      );
+      await apiUpsertComment(payload);
+      fetchData();
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        alert('You must be logged in to comment.');
+      } else {
+        alert(e.response.status);
+      }
+    }
   };
 
+
   const handleDeleteC = async (comment: Comment) => {
-    console.log(comment.id);
     let res = await apiDeleteComment(comment);
     let allComments = await apiGetAllComments();
     setComments(allComments.payload);
@@ -120,6 +128,9 @@ export const PostCard = (props: postProps) => {
   const fetchData = async () => {
     const result = await apiGetAllComments();
     setComments(result.payload.reverse());
+    props.post.comments = result.payload.reverse();
+    setPost(props.post); 
+    
   };
 
   useEffect(() => {
