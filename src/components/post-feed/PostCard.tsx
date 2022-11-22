@@ -26,7 +26,10 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { apiAddorRemoveLike } from "../../remote/social-media-api/post.api";
-import { apiGetAllComments, apiGetAllPosts } from "../../remote/social-media-api/postFeed.api";
+import {
+  apiGetAllComments,
+  apiGetAllPosts,
+} from "../../remote/social-media-api/postFeed.api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
@@ -63,7 +66,7 @@ export const PostCard = (props: postProps) => {
     try {
       let payload = new Comment(
         0,
-        data.get('commentText')?.toString() || '',
+        data.get("commentText")?.toString() || "",
         user,
         post
       );
@@ -71,13 +74,12 @@ export const PostCard = (props: postProps) => {
       fetchData();
     } catch (e: any) {
       if (e.response.status === 401) {
-        alert('You must be logged in to comment.');
+        alert("You must be logged in to comment.");
       } else {
         alert(e.response.status);
       }
     }
   };
-
 
   const handleDeleteC = async (comment: Comment) => {
     let res = await apiDeleteComment(comment);
@@ -129,8 +131,7 @@ export const PostCard = (props: postProps) => {
     const result = await apiGetAllComments();
     setComments(result.payload.reverse());
     props.post.comments = result.payload.reverse();
-    setPost(props.post); 
-    
+    setPost(props.post);
   };
 
   useEffect(() => {
