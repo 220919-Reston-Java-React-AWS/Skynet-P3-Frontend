@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,54 +14,52 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/user.context';
 
 export default function Navbar() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+  const [loggedIn, setLoggedIn] = useState(<></>);
+  const [tipTitle, setTipTitle] = useState('');
 
-    const { user, setUser } = useContext(UserContext);
-    const [loggedIn, setLoggedIn] = useState(<></>);
-    const [tipTitle, setTipTitle] = useState('');
-    
-    
-    useEffect(() => {
-        if(user) {
-            setLoggedIn(<LogoutIcon />);
-            setTipTitle('Logout');
-        } else {
-            setLoggedIn(<LoginIcon />);
-            setTipTitle('Login');
-        }
-    }, [user]);
+  useEffect(() => {
+    if (user) {
+      setLoggedIn(<LogoutIcon />);
+      setTipTitle('Logout');
+    } else {
+      setLoggedIn(<LoginIcon />);
+      setTipTitle('Login');
+    }
+  }, [user]);
 
-    function handleAuth() {
-        if(user) {
-            apiLogout();
-            setUser();
-        } else {
-           navigate('/login'); 
-        }
-    } 
+  function handleAuth() {
+    if (user) {
+      apiLogout();
+      setUser();
+    } else {
+      navigate('/login');
+    }
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="transparent">
+      <AppBar position='static'>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             Revature Social
           </Typography>
-            <div>
+          <div>
             <Tooltip disableFocusListener disableTouchListener title={tipTitle}>
-            <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+              <IconButton
+                size='large'
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
                 onClick={() => handleAuth()}
-                color="inherit"
-            >
+                color='inherit'
+              >
                 {loggedIn}
-            </IconButton>
+              </IconButton>
             </Tooltip>
-            </div>
+          </div>
         </Toolbar>
       </AppBar>
     </Box>

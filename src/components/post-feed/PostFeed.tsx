@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button } from '@mui/material';
-import Navbar from '../navbar/Navbar';
+import React, { useEffect, useState, FC } from 'react';
+import { Box, Container, Grid, Button, Paper, Link } from '@mui/material';
 import { PostCard } from './PostCard';
 import Post from '../../models/Post';
 import { apiGetAllPosts } from '../../remote/social-media-api/postFeed.api';
@@ -12,7 +11,8 @@ import {
   apiUpsertPost,
 } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link } from 'react-router-dom';
+
+import { Link as RouterLink } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -21,7 +21,7 @@ export const PostFeed = () => {
   let postForm = <></>;
 
   const handleDeleteP = async (post: Post) => {
-    let res = await apiDeletePost(post);
+    await apiDeletePost(post);
     let allPosts = await apiGetAllPosts();
     setPosts(allPosts.payload);
     console.log(posts);
@@ -92,12 +92,10 @@ export const PostFeed = () => {
   }
 
   return (
-    <>
-      <Navbar />
+    <Paper>
       <Container
         maxWidth='xl'
         sx={{
-          backgroundColor: '#fff',
           height: 'auto',
         }}
       >
@@ -106,19 +104,19 @@ export const PostFeed = () => {
           Click below to go to your profile page
         </h3>
         <div style={{ textAlign: 'center' }}>
-          <Link to={'/profile'}>Your Profile</Link>
+          <Link component={RouterLink} to={'/profile'}>
+            Your Profile
+          </Link>
         </div>
         {postForm}
       </Container>
       <Grid container justifyContent={'center'}>
-        <Grid item sx={{ width: '60%', mb: '20px' }}>
-          {posts.map((item) => (
+        {posts.map((item) => (
+          <Grid item xs={12} sm={6} md={4} sx={{ width: '60%', mb: '20px' }}>
             <PostCard post={item} key={item.postId} updatePosts={setPosts}>
-
               {user && item.author.id === user.id && (
                 <Button
-                  variant="text"
-
+                  variant='text'
                   onClick={() => {
                     handleDeleteP(item);
                   }}
@@ -128,10 +126,10 @@ export const PostFeed = () => {
                 </Button>
               )}
             </PostCard>
-          ))}
-        </Grid>
+          </Grid>
+        ))}
       </Grid>
       {noPostsText}
-    </>
+    </Paper>
   );
 };
