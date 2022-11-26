@@ -34,7 +34,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 interface postProps {
   post: Post;
-  key: number;
   updatePosts: Function;
   readonly children: React.ReactNode;
 }

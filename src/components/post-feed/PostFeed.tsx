@@ -1,5 +1,5 @@
-import React, { useEffect, useState, FC } from 'react';
-import { Box, Container, Grid, Button, Paper, Link } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Grid, Button, Paper, Typography } from '@mui/material';
 import { PostCard } from './PostCard';
 import Post from '../../models/Post';
 import { apiGetAllPosts } from '../../remote/social-media-api/postFeed.api';
@@ -11,8 +11,6 @@ import {
   apiUpsertPost,
 } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import { Link as RouterLink } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -94,41 +92,45 @@ export const PostFeed = () => {
   return (
     <Paper>
       <Container
-        maxWidth='xl'
+        maxWidth='lg'
         sx={{
           height: 'auto',
         }}
       >
-        <h2 style={{ textAlign: 'center' }}>{welcomeText}</h2>
-        <h3 style={{ textAlign: 'center' }}>
-          Click below to go to your profile page
-        </h3>
-        <div style={{ textAlign: 'center' }}>
-          <Link component={RouterLink} to={'/profile'}>
-            Your Profile
-          </Link>
-        </div>
+        <Typography variant='h2' sx={{ textAlign: 'center', p: 5 }}>
+          {welcomeText}
+        </Typography>
         {postForm}
       </Container>
-      <Grid container justifyContent={'center'}>
-        {posts.map((item) => (
-          <Grid item xs={12} sm={6} md={4} sx={{ width: '60%', mb: '20px' }}>
-            <PostCard post={item} key={item.postId} updatePosts={setPosts}>
-              {user && item.author.id === user.id && (
-                <Button
-                  variant='text'
-                  onClick={() => {
-                    handleDeleteP(item);
-                  }}
-                >
-                  <DeleteIcon></DeleteIcon>
-                  {/* {item.postId} */}
-                </Button>
-              )}
-            </PostCard>
-          </Grid>
-        ))}
-      </Grid>
+      <Container>
+        <Grid container justifyContent={'center'} maxWidth='lg'>
+          {posts.map((item) => (
+            <Grid
+              key={item.postId}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              sx={{ width: '60%', mb: '20px' }}
+            >
+              <PostCard post={item} updatePosts={setPosts}>
+                {user && item.author.id === user.id && (
+                  <Button
+                    variant='text'
+                    onClick={() => {
+                      handleDeleteP(item);
+                    }}
+                  >
+                    <DeleteIcon></DeleteIcon>
+                    {/* {item.postId} */}
+                  </Button>
+                )}
+              </PostCard>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
       {noPostsText}
     </Paper>
   );
