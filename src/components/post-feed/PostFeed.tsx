@@ -91,6 +91,21 @@ export const PostFeed = () => {
     );
   }
 
+  let profile = <></>
+
+  if (user) {
+    profile = (
+      <div>
+        <h3 style={{ textAlign: 'center' }}>
+          Click below to go to your profile page
+        </h3>
+        <div style={{ textAlign: 'center' }}>
+          <Link to={'/profile'}>Your Profile</Link>
+        </div>
+        </div>
+    );
+  };
+
   return (
     <>
       <Navbar />
@@ -102,12 +117,7 @@ export const PostFeed = () => {
         }}
       >
         <h2 style={{ textAlign: 'center' }}>{welcomeText}</h2>
-        <h3 style={{ textAlign: 'center' }}>
-          Click below to go to your profile page
-        </h3>
-        <div style={{ textAlign: 'center' }}>
-          <Link to={'/profile'}>Your Profile</Link>
-        </div>
+        {profile}
         {postForm}
       </Container>
       <Grid container justifyContent={'center'}>
