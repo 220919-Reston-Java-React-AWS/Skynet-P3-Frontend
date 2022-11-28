@@ -84,54 +84,50 @@ export const PostFeed = () => {
   if (posts.length === 0) {
     noPostsText = (
       <h2 style={{ textAlign: 'center', marginTop: '3%', color: 'gray' }}>
-        There are no posts, share your thoughts!
+        There are no posts, share your art!
       </h2>
     );
   }
 
   return (
-    <Paper>
-      <Container
-        maxWidth='lg'
-        sx={{
-          height: 'auto',
-        }}
-      >
-        <Typography variant='h2' sx={{ textAlign: 'center', p: 5 }}>
-          {welcomeText}
-        </Typography>
-        {postForm}
-      </Container>
-      <Container>
-        <Grid container justifyContent={'center'} maxWidth='lg'>
-          {posts.map((item) => (
-            <Grid
-              key={item.postId}
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              sx={{ width: '60%', mb: '20px' }}
-            >
-              <PostCard post={item} updatePosts={setPosts}>
-                {user && item.author.id === user.id && (
-                  <Button
-                    variant='text'
-                    onClick={() => {
-                      handleDeleteP(item);
-                    }}
-                  >
-                    <DeleteIcon></DeleteIcon>
-                    {/* {item.postId} */}
-                  </Button>
-                )}
-              </PostCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-
+    <Container
+      maxWidth='lg'
+      sx={{
+        height: 'auto',
+        minHeight: '90vh',
+      }}
+    >
+      <Typography variant='h2' sx={{ textAlign: 'center', p: 5 }}>
+        {welcomeText}
+      </Typography>
+      {postForm}
+      <Grid container justifyContent={'center'} maxWidth='lg'>
+        {posts.map((item) => (
+          <Grid
+            key={item.postId}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            sx={{ width: '60%', mb: '20px' }}
+          >
+            <PostCard post={item} updatePosts={setPosts}>
+              {user && item.author.id === user.id && (
+                <Button
+                  variant='text'
+                  onClick={() => {
+                    handleDeleteP(item);
+                  }}
+                >
+                  <DeleteIcon></DeleteIcon>
+                  {/* {item.postId} */}
+                </Button>
+              )}
+            </PostCard>
+          </Grid>
+        ))}
+      </Grid>
       {noPostsText}
-    </Paper>
+    </Container>
   );
 };
