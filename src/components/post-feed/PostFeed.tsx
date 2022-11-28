@@ -11,6 +11,7 @@ import {
   apiUpsertPost,
 } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -115,6 +116,7 @@ export const PostFeed = () => {
         <Typography variant='h2' sx={{ textAlign: 'center', p: 5 }}>
           {welcomeText}
         </Typography>
+        {profile}
         {postForm}
       </Container>
       <Container>
