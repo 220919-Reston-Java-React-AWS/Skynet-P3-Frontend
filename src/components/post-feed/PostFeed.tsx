@@ -11,6 +11,7 @@ import {
   apiUpsertPost,
 } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -89,6 +90,21 @@ export const PostFeed = () => {
     );
   }
 
+  let profile = <></>;
+
+  if (user) {
+    profile = (
+      <div>
+        <h3 style={{ textAlign: 'center' }}>
+          Click below to go to your profile page
+        </h3>
+        <div style={{ textAlign: 'center' }}>
+          <Link to={'/profile'}>Your Profile</Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Container
       maxWidth='lg'
@@ -100,6 +116,7 @@ export const PostFeed = () => {
       <Typography variant='h2' sx={{ textAlign: 'center', p: 5 }}>
         {welcomeText}
       </Typography>
+      {profile}
       {postForm}
       <Grid container justifyContent={'center'} maxWidth='lg'>
         {posts.map((item) => (
