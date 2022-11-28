@@ -54,13 +54,7 @@ export default function CustomSwitch(props: any) {
   return (
     <FormGroup onClick={props.onClick}>
       <FormControlLabel
-        control={
-          <MaterialUISwitch
-            sx={{ m: 1 }}
-            defaultChecked
-            checked={props.checked}
-          />
-        }
+        control={<MaterialUISwitch sx={{ m: 1 }} checked={props.checked} />}
         label=''
       />
     </FormGroup>
