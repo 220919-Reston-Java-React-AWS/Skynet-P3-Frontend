@@ -11,7 +11,6 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Button,
 } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import LoginIcon from '@mui/icons-material/Login';
@@ -129,7 +128,7 @@ export default function Navbar() {
                 aria-controls='menu-appbar'
                 aria-haspopup='true'
                 onClick={() => handleAuth()}
-                color='inherit'
+                color='default'
               >
                 {loggedIn}
               </IconButton>
@@ -141,7 +140,8 @@ export default function Navbar() {
                 component={RouterLink}
                 to={item.link}
                 key={item.text}
-                sx={{ color: '#fff', p: 2 }}
+                sx={{ p: 2 }}
+                color='textPrimary'
               >
                 {item.text}
               </Link>

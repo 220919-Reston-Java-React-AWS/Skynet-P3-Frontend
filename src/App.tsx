@@ -35,6 +35,13 @@ function App() {
           },
         },
       },
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            textDecoration: 'none',
+          },
+        },
+      },
     },
   });
   useEffect(() => {
