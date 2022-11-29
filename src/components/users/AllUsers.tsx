@@ -25,7 +25,8 @@ const AllUsers = () => {
       return (
         <Grid
           container
-          item
+          item xs ={3}
+          spacing = {1}
           justifyContent="space-evenly"
           direction="column"
           alignItems="center"
@@ -60,9 +61,11 @@ const AllUsers = () => {
     socialClient.get(`${baseURL}`).then((response) => {
       console.log(response);
       setUsers(
-          <Grid container direction="row" spacing={8}>
+          <Container maxWidth={false}>
+            <Grid container spacing={1}>
             {getAll(response.data)}
           </Grid>
+          </Container>
       );
     });
   }, []);
