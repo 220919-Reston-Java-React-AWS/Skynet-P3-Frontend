@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button, Paper, Typography } from '@mui/material';
+import { Box, Container, Grid, Button, Typography, Link } from '@mui/material';
 import { PostCard } from './PostCard';
 import Post from '../../models/Post';
 import { apiGetAllPosts } from '../../remote/social-media-api/postFeed.api';
@@ -11,7 +11,7 @@ import {
   apiUpsertPost,
 } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -99,7 +99,9 @@ export const PostFeed = () => {
           Click below to go to your profile page
         </h3>
         <div style={{ textAlign: 'center' }}>
-          <Link to={'/profile'}>Your Profile</Link>
+          <Link component={RouterLink} to={'/profile'}>
+            Your Profile
+          </Link>
         </div>
       </div>
     );
