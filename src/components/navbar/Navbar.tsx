@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Button,
 } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import LoginIcon from '@mui/icons-material/Login';
@@ -25,6 +26,8 @@ import { UserContext } from '../../context/user.context';
 import { ThemeContext } from '../../context/theme.context';
 import CustomSwitch from '../CustomSwitch';
 import { Link as RouterLink } from 'react-router-dom';
+import Following from '../users/Following';
+import Followers from '../users/Followers';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -33,6 +36,10 @@ export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(<></>);
   const [tipTitle, setTipTitle] = useState('');
   const { themeContext, setThemeContext } = useContext(ThemeContext);
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [followingOpen, setFollowingOpen] = useState(false);
+  const [followersOpen, setFollowersOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -57,39 +64,62 @@ export default function Navbar() {
     setThemeContext(!themeContext);
   };
 
-  const drawerWidth = 240;
-
-  const navItems = user
-    ? [
-        { text: 'help', link: '/help' },
-        { text: 'followers', link: '/followers' },
-        { text: 'following', link: '/following' },
-      ]
-    : [
-        { text: 'signup', link: '/register' },
-        { text: 'help', link: '/help' },
-      ];
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleFollowingToggle = () => {
+    setFollowingOpen(!followingOpen);
+  };
+
+  const handleFollowersToggle = () => {
+    setFollowersOpen(!followersOpen);
+  };
+
+  const drawerWidth = 240;
+
+  const navItems = user
+    ? [
+        { text: 'followers', onclick: () => handleFollowersToggle() },
+        { text: 'following', onclick: () => handleFollowingToggle() },
+      ]
+    : [{ text: 'signup', onclick: () => navigate('/register') }];
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant='h6' sx={{ my: 2 }}>
-        MUI
+        SkyArt
       </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
           <ListItem key={item.text} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
+            <ListItemButton sx={{ textAlign: 'center' }} onClick={item.onclick}>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
+    </Box>
+  );
+
+  const followingDrawer = (
+    <Box onClick={handleFollowingToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant='h6' sx={{ my: 2 }}>
+        Following
+      </Typography>
+      <Divider />
+      <Following />
+    </Box>
+  );
+
+  const followersDrawer = (
+    <Box onClick={handleFollowersToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant='h6' sx={{ my: 2 }}>
+        Followers
+      </Typography>
+      <Divider />
+      <Followers />
     </Box>
   );
 
@@ -136,15 +166,9 @@ export default function Navbar() {
           </div>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Link
-                component={RouterLink}
-                to={item.link}
-                key={item.text}
-                sx={{ p: 2 }}
-                color='textPrimary'
-              >
+              <Button onClick={item.onclick} key={item.text} sx={{ p: 2 }}>
                 {item.text}
-              </Link>
+              </Button>
             ))}
           </Box>
         </Toolbar>
@@ -166,6 +190,42 @@ export default function Navbar() {
           }}
         >
           {drawer}
+        </Drawer>
+        <Drawer
+          variant='temporary'
+          open={followingOpen}
+          onClose={handleFollowingToggle}
+          // anchor='right'
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+          }}
+        >
+          {followingDrawer}
+        </Drawer>
+        <Drawer
+          variant='temporary'
+          open={followersOpen}
+          onClose={handleFollowersToggle}
+          // anchor='right'
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+          }}
+        >
+          {followersDrawer}
         </Drawer>
       </Box>
     </Box>
