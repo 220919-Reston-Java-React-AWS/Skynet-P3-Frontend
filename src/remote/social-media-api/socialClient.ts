@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // This is the configuration for sending HTTP Requests with Axios
-// Very simple, but it also doesn't give us much abstraction
+// Very simple, but it also doesn't give us much abstraction.
 const socialClient = axios.create({
   withCredentials: true,
   //http://localhost:8080
