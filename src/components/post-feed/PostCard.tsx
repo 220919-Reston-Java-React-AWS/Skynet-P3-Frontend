@@ -224,3 +224,5 @@ export const PostCard = (props: postProps) => {
     </Card>
   );
 };
+
+export default PostCard;
