@@ -7,7 +7,7 @@ const socialClient = axios.create({
   //http://localhost:8080
   //http://ec2-54-196-94-234.compute-1.amazonaws.com
 
-  baseURL: 'http://ec2-54-196-94-234.compute-1.amazonaws.com',
+  baseURL: 'http://localhost:8080',
 
   headers: {
     'Content-Type': 'application/json',

@@ -11,8 +11,9 @@ export const apiGetAllPosts = async (): Promise<socialApiResponse> => {
   return { status: response.status, payload: response.data };
 };
 
-export const apiGetAllComments = async (): Promise<socialApiResponse> => {
-  const response = await socialClient.get<any>(`${baseurl}`);
+export const apiGetAllComments = async (post:Post): Promise<socialApiResponse> => {
+  const response = await socialClient.get<any>(`${baseurl}`, post, 
+  );
   console.log(response.data);
   return { status: response.status, payload: response.data };
 };

@@ -69,8 +69,9 @@ export const PostCard = (props: postProps) => {
         post
       );
       await apiUpsertComment(payload);
+      await apiGetAllComments(payload.post);
 
-      fetchData();
+      fetchData(payload.post);
     } catch (e: any) {
       if (e.response.status === 401) {
         alert("You must be logged in to comment.");
@@ -82,7 +83,7 @@ export const PostCard = (props: postProps) => {
 
   const handleDeleteC = async (comment: Comment) => {
     await apiDeleteComment(comment);
-    let allComments = await apiGetAllComments();
+    let allComments = await apiGetAllComments(comment.post);
     setComments(allComments.payload);
     console.log(comments);
   };
@@ -134,8 +135,8 @@ export const PostCard = (props: postProps) => {
     </Paper>
   );
 
-  const fetchData = async () => {
-    const result = await apiGetAllComments();
+  const fetchData = async (post: Post) => {
+    const result = await apiGetAllComments(post);
     setComments(result.payload.reverse());
     props.post.comments = result.payload.reverse();
     setPost(props.post);
