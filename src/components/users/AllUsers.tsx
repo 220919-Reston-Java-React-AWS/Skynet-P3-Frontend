@@ -29,8 +29,9 @@ const AllUsers = () => {
           <Grid
             container
             item
-            xs={6}
-            md={3}
+            xs={12}
+            md={6}
+            lg={3}
             spacing={1}
             justifyContent='space-evenly'
             direction='column'
@@ -52,8 +53,8 @@ const AllUsers = () => {
               consequat.
             </Grid>
             <Grid item>
-              <Button>
-                <AddCircleIcon onClick={() => newFollow(a.id)}></AddCircleIcon>
+              <Button onClick={() => newFollow(a.id)}>
+                <AddCircleIcon></AddCircleIcon>
               </Button>
             </Grid>
           </Grid>

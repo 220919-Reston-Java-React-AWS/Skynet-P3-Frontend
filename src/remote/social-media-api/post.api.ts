@@ -2,7 +2,6 @@ import Post from '../../models/Post';
 
 import Comment from '../../models/Comment';
 import socialClient, { socialApiResponse } from './socialClient';
-import { AxiosError } from 'axios';
 
 const baseURL = '/post';
 
@@ -13,8 +12,13 @@ export const apiGetPosts = async (): Promise<socialApiResponse> => {
   return { status: response.status, payload: response.data };
 };
 
-export const apiGetComments = async (): Promise<socialApiResponse> => {
-  const response = await socialClient.get<any>(baseurl);
+export const apiGetAllPosts = async (): Promise<socialApiResponse> => {
+  const response = await socialClient.get<any>(`${baseURL}/all`);
+  return { status: response.status, payload: response.data };
+};
+
+export const apiGetComments = async (post: any): Promise<socialApiResponse> => {
+  const response = await socialClient.get<any>(baseurl, post);
   return { status: response.status, payload: response.data };
 };
 
@@ -67,6 +71,6 @@ export const apiDeleteComment = async (
     withCredentials: true,
     data: comment,
   });
-  apiGetComments();
+  apiGetComments(comment.post);
   return { status: response.status, payload: response.data };
 };
