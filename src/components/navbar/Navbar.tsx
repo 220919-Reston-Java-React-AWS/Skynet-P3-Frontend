@@ -54,6 +54,7 @@ export default function Navbar() {
   function handleAuth() {
     if (user) {
       apiLogout();
+      navigate('/');
       setUser();
     } else {
       navigate('/login');
@@ -109,7 +110,7 @@ export default function Navbar() {
         Following
       </Typography>
       <Divider />
-      <Following />
+      {user && <Following user={user} />}
     </Box>
   );
 

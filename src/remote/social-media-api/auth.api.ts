@@ -33,3 +33,8 @@ export const apiRegister = async (
   });
   return { status: response.status, payload: response.data };
 };
+
+export const apiGetUser = async () => {
+  const response = await socialClient.post<any>(`${baseURL}/user`);
+  return { status: response.status, payload: response.data };
+};

@@ -1,11 +1,15 @@
 import { apiGetFollowing } from '../../remote/social-media-api/users';
 import { IUser } from '../../models/AllUsers';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/user.context';
+import { useEffect, useState } from 'react';
+import { List, ListItem } from '@mui/material';
 
-const Following = () => {
+interface followingProps {
+  user: IUser;
+}
+
+const Following = (props: followingProps) => {
   const [followingList, setFollowingList] = useState([]);
-  const { user } = useContext(UserContext);
+  const { user } = props;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,12 +21,19 @@ const Following = () => {
     fetchData();
   }, [user]);
 
+  if (followingList.length === 0) {
+    return (
+      <List>
+        <ListItem>Not following anyone.</ListItem>
+      </List>
+    );
+  }
   return (
-    <ul>
+    <List>
       {followingList.map((following: IUser) => {
-        return <li key={following.id}>{following.firstName}</li>;
+        return <ListItem key={following.id}>{following.firstName}</ListItem>;
       })}
-    </ul>
+    </List>
   );
 };
 

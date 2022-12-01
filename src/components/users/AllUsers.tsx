@@ -1,24 +1,28 @@
 import { Box, Button, Container, Grid, Link } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { IUser } from '../../models/AllUsers';
 import socialClient from '../../remote/social-media-api/socialClient';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link as RouterLink } from 'react-router-dom';
+import { UserContext } from '../../context/user.context';
+import { apiGetUser } from '../../remote/social-media-api/auth.api';
+import { apiNewFollow } from '../../remote/social-media-api/users';
 
 const AllUsers = () => {
   const baseURL = '/users';
-  const baseURL1 = '/users/follow';
 
   const [users, setUsers] = useState(<></>);
-  // const { user } = useContext(UserContext);
-  function newFollow(i: number) {
-    socialClient.put(`${baseURL1}`, { userId: i }).then((response) => {
-      console.log(response.data);
-      return response.data;
-    });
-  }
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
+    function newFollow(i: number) {
+      apiNewFollow(i).then(() => {
+        apiGetUser().then((response) => {
+          setUser(response.payload);
+        });
+      });
+    }
+
     function getAll(a: IUser[]) {
       const list = a.map((a) => {
         return (
@@ -67,7 +71,7 @@ const AllUsers = () => {
         </Container>
       );
     });
-  }, []);
+  }, [setUser]);
 
   return (
     <Box sx={{ p: 4 }}>
