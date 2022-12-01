@@ -35,7 +35,7 @@ export default function Login() {
         JSON.stringify(response.payload)
       );
     } catch (e: any) {
-      alert('Could not log in: ', e.response);
+      alert('Could not log in: ' + e);
     }
   };
 
