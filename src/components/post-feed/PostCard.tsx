@@ -68,9 +68,9 @@ export const PostCard = (props: postProps) => {
         post
       );
       await apiUpsertComment(payload);
-      await apiGetAllComments(payload.post);
+      await apiGetComments(payload.post);
 
-      fetchData(payload.post);
+      fetchData();
     } catch (e: any) {
       if (e.response.status === 401) {
         alert('You must be logged in to comment.');
