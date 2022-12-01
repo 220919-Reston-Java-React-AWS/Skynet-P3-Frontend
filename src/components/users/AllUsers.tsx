@@ -185,15 +185,17 @@ const AllUsers = () => {
   
 
   return (
-    <>
-      <h1 id="profile-page" style={{ textAlign: "center" }}>
+    <Box sx={{ p: 4 }}>
+      <h1 id='profile-page' style={{ textAlign: 'center' }}>
         All Users
       </h1>
       {users}
-      <div style={{ textAlign: "center" }}>
-        <Link to={"/"}>Back to your post feed</Link>
+      <div style={{ textAlign: 'center' }}>
+        <Link component={RouterLink} to={'/'}>
+          Back to your post feed
+        </Link>
       </div>
-    </>
+    </Box>
   );
 };
 

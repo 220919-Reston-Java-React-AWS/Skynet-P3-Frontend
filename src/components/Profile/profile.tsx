@@ -20,7 +20,12 @@ const Profile = () => {
             alignItems='center'
           >
             <Grid item id='profile-box'>
-              <img src={info.pic} id='profile-pic' />
+              <img
+                src={info.pic}
+                id='profile-pic'
+                alt={info.username}
+                width='300px'
+              />
             </Grid>
           </Grid>
           <Grid

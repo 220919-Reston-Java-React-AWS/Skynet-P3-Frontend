@@ -1,4 +1,5 @@
 import React from 'react';
+import { IUser } from '../models/AllUsers';
 
 export interface User {
   id: number;
@@ -8,11 +9,14 @@ export interface User {
   username: string;
   pic: string;
   about: string;
+  following: Array<IUser>;
 }
 
 interface UserContextState {
   user: User | undefined;
+  following: Array<IUser> | undefined;
   setUser: (user?: User) => void;
+  setFollowing: (following?: Array<IUser>) => void;
 }
 
 // Define the User Context
@@ -23,5 +27,7 @@ interface UserContextState {
 // And then the user can be used and updated in a standard fashion
 export const UserContext = React.createContext<UserContextState>({
   user: undefined,
+  following: undefined,
   setUser: () => {},
+  setFollowing: () => {},
 });

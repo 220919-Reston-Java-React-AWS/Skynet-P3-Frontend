@@ -5,14 +5,15 @@ import axios from 'axios';
 const socialClient = axios.create({
   withCredentials: true,
   //http://localhost:8080
-  //http://project3-env.eba-fufsnv9d.us-east-1.elasticbeanstalk.com
+  //http://ec2-54-196-94-234.compute-1.amazonaws.com
 
-  baseURL: 'http://localhost:8080',
+  // baseURL: 'http://ec2-54-196-94-234.compute-1.amazonaws.com',
+  baseURL: 'http://ec2-54-196-94-234.compute-1.amazonaws.com',
 
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': 'http://localhost:8080',
-  }
+  },
 });
 
 export interface socialApiResponse {

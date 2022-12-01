@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Post from '../../models/Post';
 import Comment from '../../models/Comment';
@@ -26,11 +26,10 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { apiAddorRemoveLike } from '../../remote/social-media-api/post.api';
-import {
-  apiGetAllComments,
-  apiGetAllPosts,
-} from '../../remote/social-media-api/postFeed.api';
+import { apiGetComments } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { apiNewFollow } from '../../remote/social-media-api/users';
+import { apiGetUser } from '../../remote/social-media-api/auth.api';
 
 interface postProps {
   post: Post;
@@ -50,7 +49,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export const PostCard = (props: postProps) => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [expanded, setExpanded] = React.useState(false);
   const [post, setPost] = useState(props.post);
   const [comments, setComments] = useState(post.comments);
@@ -82,7 +81,7 @@ export const PostCard = (props: postProps) => {
 
   const handleDeleteC = async (comment: Comment) => {
     await apiDeleteComment(comment);
-    let allComments = await apiGetAllComments();
+    let allComments = await apiGetComments(post);
     setComments(allComments.payload);
     console.log(comments);
   };
@@ -110,11 +109,11 @@ export const PostCard = (props: postProps) => {
     <Paper
       component='form'
       sx={{
-        p: '4px 0',
+        p: '2px 0',
         display: 'flex',
         alignItems: 'center',
         width: '100%',
-        mb: '15px',
+        mb: '5px',
       }}
       elevation={1}
       onSubmit={handleComment}
@@ -135,7 +134,7 @@ export const PostCard = (props: postProps) => {
   );
 
   const fetchData = async () => {
-    const result = await apiGetAllComments();
+    const result = await apiGetComments(post);
     setComments(result.payload.reverse());
     props.post.comments = result.payload.reverse();
     setPost(props.post);
@@ -157,14 +156,30 @@ export const PostCard = (props: postProps) => {
     );
   }
 
+  function newFollow(i: number) {
+    apiNewFollow(i).then(() => {
+      apiGetUser().then((response) => {
+        setUser(response.payload);
+      });
+    });
+  }
+
   return (
-    <Card sx={{ maxWidth: '100%', marginTop: '3%' }}>
+    <Card sx={{ maxWidth: '100%', marginTop: '2%' }}>
       <CardHeader
         title={props.post.author.firstName}
         avatar={
           <Avatar sx={{ bgcolor: '#ed6c02' }} aria-label='recipe'>
             <PersonIcon />
           </Avatar>
+        }
+        action={
+          user &&
+          props.post.author.id !== user.id && (
+            <Button onClick={() => newFollow(props.post.author.id)}>
+              <AddCircleIcon></AddCircleIcon>
+            </Button>
+          )
         }
       />
 
@@ -224,3 +239,5 @@ export const PostCard = (props: postProps) => {
     </Card>
   );
 };
+
+export default PostCard;
