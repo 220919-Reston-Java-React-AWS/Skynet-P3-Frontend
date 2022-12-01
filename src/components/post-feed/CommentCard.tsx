@@ -1,3 +1,5 @@
+import { Typography, Paper } from '@mui/material';
+
 interface CommentProps {
   text: string;
   key: number;
@@ -8,11 +10,15 @@ interface CommentProps {
 
 const CommentCard = (props: CommentProps) => {
   return (
-    <div>
-      <div>{props.commenter.firstName}</div>
-      <div>{props.text}</div>
+    <Paper
+      sx={{ backgroundColor: 'rgba(0,0,0,0.5)', p: 1, borderRadius: '5px' }}
+    >
+      <Typography variant='subtitle2'>{props.commenter.firstName}:</Typography>
+
+      <Typography variant='caption'>{props.text}</Typography>
+
       {props.children}
-    </div>
+    </Paper>
   );
 };
 

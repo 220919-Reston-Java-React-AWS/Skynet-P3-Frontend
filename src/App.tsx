@@ -8,11 +8,13 @@ import { createTheme, CssBaseline, Paper } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import { ThemeContext } from './context/theme.context';
 import bg1 from './components/squares.jpg';
+import { IUser } from './models/AllUsers';
 
 function App() {
   const [user, setUser] = useState<User | undefined>();
+  const [following, setFollowing] = useState<Array<IUser> | undefined>();
   const [themeContext, setThemeContext] = useState(true);
-  const uservalue = { user, setUser };
+  const uservalue = { user, setUser, following, setFollowing };
 
   const theme = createTheme({
     palette: {
@@ -54,7 +56,7 @@ function App() {
       <ThemeContext.Provider value={{ themeContext, setThemeContext }}>
         <ThemeProvider theme={theme}>
           <CssBaseline />{' '}
-          <Paper>
+          <Paper sx={{ minHeight: 'calc(100vh)' }}>
             <Router>
               <Navbar />
               <AppRoutes></AppRoutes>

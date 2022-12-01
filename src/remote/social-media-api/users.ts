@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import socialClient from './socialClient';
 
 const baseURL = '/users';

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button, Typography, Link } from '@mui/material';
+import { Box, Container, Grid, Button, Typography } from '@mui/material';
 import { PostCard } from './PostCard';
 import Post from '../../models/Post';
-import { apiGetAllPosts } from '../../remote/social-media-api/postFeed.api';
-import { useContext } from 'react';
+import {
+  apiGetPosts,
+  apiGetAllPosts,
+} from '../../remote/social-media-api/post.api';
+import { useContext, useCallback } from 'react';
 import { UserContext } from '../../context/user.context';
 import TextField from '@mui/material/TextField';
 import {
@@ -11,17 +14,17 @@ import {
   apiUpsertPost,
 } from '../../remote/social-media-api/post.api';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link as RouterLink } from 'react-router-dom';
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const { user } = useContext(UserContext);
+  const [filterFollow, setFilterFollow] = useState(true);
   let welcomeText = 'Welcome!';
   let postForm = <></>;
 
   const handleDeleteP = async (post: Post) => {
     await apiDeletePost(post);
-    let allPosts = await apiGetAllPosts();
+    let allPosts = filterFollow ? await apiGetPosts() : await apiGetAllPosts();
     setPosts(allPosts.payload);
     console.log(posts);
   };
@@ -71,14 +74,14 @@ export const PostFeed = () => {
 
     welcomeText = `Welcome, ${user.firstName}!`;
   }
-  const fetchData = async () => {
-    const result = await apiGetAllPosts();
-    setPosts(result.payload.reverse());
-  };
 
+  const fetchData = useCallback(async () => {
+    const result = filterFollow ? await apiGetPosts() : await apiGetAllPosts();
+    setPosts(result.payload.reverse());
+  }, [filterFollow]);
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   let noPostsText = <></>;
 
@@ -95,13 +98,14 @@ export const PostFeed = () => {
   if (user) {
     profile = (
       <div>
-        <h3 style={{ textAlign: 'center' }}>
-          Click below to go to your profile page
-        </h3>
         <div style={{ textAlign: 'center' }}>
-          <Link component={RouterLink} to={'/profile'}>
-            Your Profile
-          </Link>
+          <Button
+            onClick={() => {
+              setFilterFollow(!filterFollow);
+            }}
+          >
+            See {filterFollow ? 'All posts' : 'Posts you follow'}
+          </Button>
         </div>
       </div>
     );
