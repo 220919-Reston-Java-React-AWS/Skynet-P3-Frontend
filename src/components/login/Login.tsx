@@ -21,15 +21,22 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const response = await apiLogin(
-      `${data.get('email')}`,
-      `${data.get('password')}`
-    );
-    if (response.status >= 200 && response.status < 300) {
-      setUser(response.payload);
-      navigate('/');
+    try {
+      const response = await apiLogin(
+        `${data.get('email')}`,
+        `${data.get('password')}`
+      );
+      if (response.status >= 200 && response.status < 300) {
+        setUser(response.payload);
+        navigate('/');
+      }
+      window.sessionStorage.setItem(
+        'userData',
+        JSON.stringify(response.payload)
+      );
+    } catch (e: any) {
+      alert('Could not log in: ', e.response);
     }
-    window.sessionStorage.setItem('userData', JSON.stringify(response.payload));
   };
 
   return (

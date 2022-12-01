@@ -68,9 +68,8 @@ export const PostCard = (props: postProps) => {
         post
       );
       await apiUpsertComment(payload);
-      await apiGetComments(payload.post);
 
-      fetchData();
+      fetchData(payload.post);
     } catch (e: any) {
       if (e.response.status === 401) {
         alert('You must be logged in to comment.');
@@ -134,8 +133,8 @@ export const PostCard = (props: postProps) => {
     </Paper>
   );
 
-  const fetchData = async () => {
-    const result = await apiGetComments(post);
+  const fetchData = async (payloadpost: Post) => {
+    const result = await apiGetComments(payloadpost);
     setComments(result.payload.reverse());
     props.post.comments = result.payload.reverse();
     setPost(props.post);
