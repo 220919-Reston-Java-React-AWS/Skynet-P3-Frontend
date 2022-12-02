@@ -19,13 +19,17 @@ export default function Register() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const response = await apiRegister(
-      `${data.get('firstName')}`,
-      `${data.get('lastName')}`,
-      `${data.get('email')}`,
-      `${data.get('password')}`
-    );
-    if (response.status >= 200 && response.status < 300) navigate('/login');
+    try {
+      const response = await apiRegister(
+        `${data.get('firstName')}`,
+        `${data.get('lastName')}`,
+        `${data.get('email')}`,
+        `${data.get('password')}`
+      );
+      if (response.status >= 200 && response.status < 300) navigate('/login');
+    } catch (e: any) {
+      alert('Could not register:' + e);
+    }
   };
 
   return (
