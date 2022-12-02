@@ -44,13 +44,9 @@ const AllUsers = () => {
             <Grid item>
               {a.firstName} {a.lastName}
             </Grid>
-            <Grid item>{a.username}PokemonLover123</Grid>
+            <Grid item>{a.username}</Grid>
             <Grid item id='bio'>
-              {a.about}Test bio: Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat.
+              {a.about}
             </Grid>
             <Grid item>
               <Button onClick={() => newFollow(a.id)}>
